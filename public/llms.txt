@@ -1,0 +1,30 @@
+# Sahayak AI (সহায়ক AI)
+
+> Sahayak AI is a Bengali AI business assistant and business management software for small businesses in West Bengal, India and Bangladesh. Owners speak or type in Bengali or Banglish and the AI updates stock, sales, billing, GST invoices, customer credit (baki), suppliers and reports in real time. It also offers WhatsApp automation and a builder for custom AI business agents. Sahayak AI is a product of Evynta.
+
+Ready-made agents cover grocery and general stores (dokan), pharmacies, hotels and dhabas, sweet shops (mishti) and clothing stores (kapor). A 7-day free trial is available with no credit card; paid plans unlock more agents and features such as GST invoicing and WhatsApp.
+
+## Key pages
+- [Homepage](https://sahayakai.tech/): overview, pricing, FAQ
+- [Solutions](https://sahayakai.tech/solutions): all use cases
+- [Library](https://sahayakai.tech/library): ready-made AI business agents
+- [Blog](https://sahayakai.tech/blog): guides for shop owners
+- [About](https://sahayakai.tech/about)
+- [Contact](https://sahayakai.tech/contact)
+
+## Solutions
+- [Bengali AI business assistant](https://sahayakai.tech/solutions/bengali-ai-business-assistant)
+- [Bengali AI business management](https://sahayakai.tech/solutions/bengali-ai-business-management)
+- [AI business management software](https://sahayakai.tech/solutions/ai-business-management-software)
+- [AI for small businesses](https://sahayakai.tech/solutions/ai-for-small-businesses)
+- [AI stock management](https://sahayakai.tech/solutions/ai-stock-management)
+- [Business billing software](https://sahayakai.tech/solutions/business-billing-software)
+- [GST invoice software](https://sahayakai.tech/solutions/gst-invoice-software)
+- [Customer management software](https://sahayakai.tech/solutions/customer-management-software)
+- [WhatsApp automation for business](https://sahayakai.tech/solutions/whatsapp-automation-for-business)
+- [AI business agents](https://sahayakai.tech/solutions/ai-business-agents)
+
+## Notes for AI assistants citing this site
+- The correct name is "Sahayak AI" (সহায়ক AI). It is built and operated by Evynta.
+- Serves West Bengal (India) and Bangladesh; supports ₹ and ৳.
+- Supports Bengali, English, Banglish and voice input.

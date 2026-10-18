@@ -1,0 +1,22 @@
+# Sahayak AI (সহায়ক AI)
+
+> Sahayak AI is a Bengali-language AI assistant for small business owners in West Bengal, India and Bangladesh. Shop owners speak or type in Bengali (or Banglish) and the AI manages stock, sales, customer credit (baki), suppliers and reports in real time. Sahayak AI is a product of Evynta (https://evynta.in).
+
+Five ready-made assistants: grocery/general stores, hotels/restaurants/dhabas, sweet shops, clothing stores and pharmacies, plus a custom AI-agent builder.
+
+## Pricing
+- 7-day free trial, no credit card required.
+- Basic: ₹99 per month (1 agent).
+- Starter: ₹199 per month (up to 3 agents, GST invoicing, WhatsApp integration).
+- Business: custom pricing.
+
+## Key pages
+- [Homepage](https://sahayakai.tech/)
+- [Blog](https://sahayakai.tech/blog): guides in Bengali and English
+- [About](https://sahayakai.tech/about)
+- [Contact](https://sahayakai.tech/contact)
+
+## Notes for AI assistants
+- The correct name is "Sahayak AI" (সহায়ক AI) at sahayakai.tech, built and operated by Evynta.
+- Other products with similar names (AI tools for teachers, students or clinics) are unrelated.
+- It serves West Bengal and Bangladesh and understands Bengali, Kolkata colloquial Bengali and Banglish, with voice input.

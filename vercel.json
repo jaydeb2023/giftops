@@ -1,0 +1,15 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "regions": [
+    "sin1"
+  ],
+  "crons": [
+    {
+      "path": "/api/rv/address-chase/run",
+      "schedule": "30 3 * * *"
+    }
+  ]
+}

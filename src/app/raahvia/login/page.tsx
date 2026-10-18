@@ -1,0 +1,61 @@
+'use client'
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { supabase } from '@/lib/supabaseClient'
+import { Button, Field, Input } from '@/components/rv/ui'
+
+function Form() {
+  const router = useRouter()
+  const sp = useSearchParams()
+  const next = sp.get('next') || '/raahvia'
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [mode, setMode] = useState<'login' | 'signup'>('login')
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !password) return toast.error('Enter email and password')
+    setBusy(true)
+    try {
+      if (mode === 'signup') {
+        const { data, error } = await supabase.auth.signUp({ email, password })
+        if (error) throw error
+        if (!data.session) { toast.success('Account created. Check your email to confirm, then sign in.'); setMode('login') }
+        else router.push(next)
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if (error) throw error
+        router.push(next)
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'Could not sign in')
+    } finally { setBusy(false) }
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-rv-900 via-rv-800 to-rv-700 p-4">
+      <form onSubmit={submit} className="w-full max-w-sm space-y-4 rounded-2xl bg-white p-7 shadow-2xl">
+        <div className="text-center">
+          <div className="text-2xl font-extrabold tracking-wide text-rv-800">RAAHVIA</div>
+          <div className="text-[11px] uppercase tracking-[0.2em] text-gray-400">Gift fulfilment CRM</div>
+        </div>
+        <Field label="Email"><Input type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@raahvia.in" /></Field>
+        <Field label="Password"><Input type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={password} onChange={e => setPassword(e.target.value)} /></Field>
+        <Button type="submit" variant="primary" className="w-full" loading={busy}>{mode === 'login' ? 'Sign in' : 'Create account'}</Button>
+        <p className="text-center text-xs text-gray-500">
+          {mode === 'login' ? 'First time setting up? ' : 'Already have an account? '}
+          <button type="button" className="font-medium text-rv-700 hover:underline" onClick={() => setMode(m => (m === 'login' ? 'signup' : 'login'))}>
+            {mode === 'login' ? 'Create the admin account' : 'Sign in'}
+          </button>
+        </p>
+        <p className="text-center text-[11px] leading-snug text-gray-400">The first account created becomes the admin. Everyone else is added by the admin under Settings.</p>
+      </form>
+    </div>
+  )
+}
+
+export default function LoginPage() {
+  return <Suspense><Form /></Suspense>
+}

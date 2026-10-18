@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "tech.sahayakai.twa",
+      "sha256_cert_fingerprints": [
+        "3B:ED:A2:8B:D5:CF:EF:13:12:41:26:F8:A9:E3:C1:E9:70:D5:49:0A:61:54:9C:8E:4C:F8:85:96:32:25:56:17",
+        "BC:16:D9:FE:08:7E:5D:91:43:AA:B5:6C:A1:CC:22:3F:B9:D0:55:C3:EF:14:A9:37:3B:34:C7:D2:C9:87:BA:B8"
+      ]
+    }
+  }
+]

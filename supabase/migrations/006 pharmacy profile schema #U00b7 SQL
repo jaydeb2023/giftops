@@ -1,0 +1,44 @@
+-- Sahayak AI — Business Profile Schema
+-- Run in Supabase SQL Editor
+
+-- ── pharmacy_profiles: one per user ──────────────────────────────
+create table if not exists public.pharmacy_profiles (
+  id uuid default uuid_generate_v4() primary key,
+  user_id uuid references auth.users on delete cascade not null unique,
+  business_name text not null default 'আমার ফার্মেসি',
+  owner_name text default '',
+  phone text default '',
+  address text default '',
+  license_no text default '',
+  gstin text default '',
+  logo_url text default '',
+  created_at timestamp with time zone default timezone('utc', now()),
+  updated_at timestamp with time zone default timezone('utc', now())
+);
+
+alter table public.pharmacy_profiles enable row level security;
+
+create policy "Users manage own pharmacy profile"
+  on public.pharmacy_profiles for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+create index if not exists idx_pharmacy_profiles_user on public.pharmacy_profiles(user_id);
+
+-- Auto-create profile on signup (optional trigger)
+create or replace function create_pharmacy_profile()
+returns trigger as $$
+begin
+  insert into public.pharmacy_profiles (user_id, business_name)
+  values (new.id, 'আমার ফার্মেসি')
+  on conflict (user_id) do nothing;
+  return new;
+end;
+$$ language plpgsql security definer;
+
+-- Drop existing trigger if any
+drop trigger if exists on_auth_user_created_pharmacy on auth.users;
+
+create trigger on_auth_user_created_pharmacy
+  after insert on auth.users
+  for each row execute function create_pharmacy_profile();

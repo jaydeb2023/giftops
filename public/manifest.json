@@ -1,0 +1,35 @@
+{
+  "name": "Sahayak AI — সহায়ক AI",
+  "short_name": "Sahayak AI",
+  "description": "বাংলায় কথা বলুন, AI কাজ করবে। দোকান, ফার্মেসি, হোটেল — ছোট ব্যবসার জন্য বাংলা AI সহকারী।",
+  "start_url": "/dashboard?source=pwa",
+  "id": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#4F46E5",
+  "lang": "bn",
+  "dir": "ltr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
