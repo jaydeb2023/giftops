@@ -32,12 +32,18 @@ export function fail(message: string, status = 400, extra: Record<string, any> =
  * (restricted to RV_ADMIN_EMAILS if that env var is set).
  */
 export async function guard(roles?: RvRole[]): Promise<GuardResult> {
+  try { return await guardInner(roles) }
+  catch (e: any) { return { ok: false, res: fail(`Server setup problem: ${e?.message || e}`, 500) } }
+}
+
+async function guardInner(roles?: RvRole[]): Promise<GuardResult> {
   const authClient = createRouteClient()
   const { data: { user } } = await authClient.auth.getUser()
   if (!user) return { ok: false, res: fail('Please sign in.', 401) }
 
   const db = createAdminClient()
-  let { data: staff } = await db.from('rv_staff').select('*').eq('user_id', user.id).maybeSingle()
+  let { data: staff, error: staffErr } = await db.from('rv_staff').select('*').eq('user_id', user.id).maybeSingle()
+  if (staffErr) return { ok: false, res: fail(`Database problem: ${staffErr.message}. Did you run the 010 SQL migration in this Supabase project?`, 500) }
 
   if (!staff) {
     // Link a pre-created staff row (added by an admin) to this login by email.
@@ -66,7 +72,7 @@ export async function guard(roles?: RvRole[]): Promise<GuardResult> {
   }
 
   if (!staff || !staff.active) {
-    return { ok: false, res: fail('Your account is not set up for Raahvia CRM. Ask an admin to add you.', 403, { code: 'NOT_STAFF' }) }
+    return { ok: false, res: fail('Your account is not set up for GiftOps. Ask an admin to add you.', 403, { code: 'NOT_STAFF' }) }
   }
   if (roles && staff.role !== 'admin' && !roles.includes(staff.role)) {
     return { ok: false, res: fail('You do not have permission for this action.', 403, { code: 'FORBIDDEN' }) }

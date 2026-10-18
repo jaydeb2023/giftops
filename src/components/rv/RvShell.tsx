@@ -1,4 +1,5 @@
 'use client'
+import Logo from './Logo'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -47,7 +48,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
         <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow">
           <h1 className="text-lg font-semibold text-gray-900">No access yet</h1>
-          <p className="mt-2 text-sm text-gray-600">{deniedMsg || 'Your account is not set up for Raahvia CRM.'}</p>
+          <p className="mt-2 text-sm text-gray-600">{deniedMsg || 'Your account is not set up for GiftOps.'}</p>
           <button onClick={signOut} className="mt-4 rounded-lg bg-rv-700 px-4 py-2 text-sm font-medium text-white hover:bg-rv-800">Sign out</button>
         </div>
       </div>
@@ -61,8 +62,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
   const sidebar = (
     <nav className="flex h-full flex-col bg-rv-900 text-rv-100">
       <div className="px-5 py-5">
-        <div className="text-xl font-extrabold tracking-wide text-white">RAAHVIA</div>
-        <div className="text-[10px] uppercase tracking-[0.2em] text-rv-300">Gift fulfilment CRM</div>
+        <Logo light />
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto px-3 pb-4">
         {groups.map(g => (
@@ -98,7 +98,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
         <div className="lg:pl-60 print:pl-0">
           <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-gray-200 bg-white px-4 py-3 lg:hidden print:hidden">
             <button onClick={() => setOpen(o => !o)} aria-label="Menu" className="rounded-md p-1.5 hover:bg-gray-100">{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
-            <span className="font-bold text-rv-800">RAAHVIA</span>
+            <Logo size={28} tagline={false} />
           </header>
           <main className="mx-auto max-w-[1400px] p-4 sm:p-6 print:p-0">{children}</main>
         </div>

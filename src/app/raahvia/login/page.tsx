@@ -1,4 +1,5 @@
 'use client'
+import Logo from '@/components/rv/Logo'
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -38,10 +39,10 @@ function Form() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-rv-900 via-rv-800 to-rv-700 p-4">
       <form onSubmit={submit} className="w-full max-w-sm space-y-4 rounded-2xl bg-white p-7 shadow-2xl">
         <div className="text-center">
-          <div className="text-2xl font-extrabold tracking-wide text-rv-800">RAAHVIA</div>
-          <div className="text-[11px] uppercase tracking-[0.2em] text-gray-400">Gift fulfilment CRM</div>
+          <div className="flex justify-center"><Logo size={44} /></div>
+          <div className="mt-1 text-[11px] uppercase tracking-[0.2em] text-gray-400">Gift fulfilment CRM</div>
         </div>
-        <Field label="Email"><Input type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@raahvia.in" /></Field>
+        <Field label="Email"><Input type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@company.com" /></Field>
         <Field label="Password"><Input type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={password} onChange={e => setPassword(e.target.value)} /></Field>
         <Button type="submit" variant="primary" className="w-full" loading={busy}>{mode === 'login' ? 'Sign in' : 'Create account'}</Button>
         <p className="text-center text-xs text-gray-500">

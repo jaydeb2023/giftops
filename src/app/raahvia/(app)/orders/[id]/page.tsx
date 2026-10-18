@@ -55,7 +55,7 @@ export default function OrderPage() {
   const statusText = useMemo(() => {
     if (!d) return ''
     const c = d.counts
-    return `Hello ${d.order.customer?.name || ''}, update on your order ${d.order.order_no}${d.order.occasion ? ` (${d.order.occasion})` : ''}: ${c.delivered} of ${c.recipients} gifts delivered${c.failed ? `, ${c.failed} need a re-attempt` : ''}${c.in_transit ? `, ${c.in_transit} out for delivery` : ''}. - Raahvia`
+    return `Hello ${d.order.customer?.name || ''}, update on your order ${d.order.order_no}${d.order.occasion ? ` (${d.order.occasion})` : ''}: ${c.delivered} of ${c.recipients} gifts delivered${c.failed ? `, ${c.failed} need a re-attempt` : ''}${c.in_transit ? `, ${c.in_transit} out for delivery` : ''}.`
   }, [d])
 
   if (loading && !d) return <div className="py-20 text-center"><Spinner className="mx-auto h-8 w-8" /></div>
