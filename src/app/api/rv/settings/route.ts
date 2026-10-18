@@ -20,6 +20,9 @@ export async function GET() {
       ai_call: aiCallConfigured(),
       ai_call_callback_secret: !!process.env.RV_AI_CALL_SECRET,
       cron_secret: !!process.env.CRON_SECRET,
+      lead_api: !!process.env.RV_LEAD_API_KEY,
+      meta: !!(process.env.RV_META_APP_SECRET && process.env.RV_META_VERIFY_TOKEN),
+      meta_page_token: !!process.env.RV_META_PAGE_TOKEN,
       app_url: process.env.NEXT_PUBLIC_APP_URL || '',
     },
   })

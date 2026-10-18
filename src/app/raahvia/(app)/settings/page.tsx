@@ -61,11 +61,16 @@ function Integrations({ p }: { p: any }) {
       {row('WhatsApp webhook signature', p.whatsapp_webhook_secret, 'RV_WA_APP_SECRET (Meta app secret) and RV_WA_VERIFY_TOKEN')}
       {row('AI calling provider', p.ai_call, 'RV_AI_CALL_API_URL, RV_AI_CALL_API_KEY (optional RV_AI_CALL_SCRIPT)')}
       {row('AI call callback secret', p.ai_call_callback_secret, 'RV_AI_CALL_SECRET, sent by the provider in header x-rv-secret')}
+      {row('Website / chatbot / forwarder lead URL', p.lead_api, 'RV_LEAD_API_KEY (any long random string)')}
+      {row('Facebook + Instagram webhook', p.meta, 'RV_META_VERIFY_TOKEN, RV_META_APP_SECRET')}
+      {row('Facebook + Instagram page token', p.meta_page_token, 'RV_META_PAGE_TOKEN (reads lead-ad details and sender names)')}
       {row('Scheduled chase (cron)', p.cron_secret, 'CRON_SECRET, call the URL below every 30-60 minutes')}
     </Table>
     <Card title="URLs to configure">
       <ul className="space-y-1 font-mono text-xs break-all">
         <li>WhatsApp webhook: {origin}/api/rv/webhooks/whatsapp</li>
+        <li>Lead capture (POST, header x-api-key): {origin}/api/rv/public/lead</li>
+        <li>Facebook / Instagram webhook: {origin}/api/rv/webhooks/meta</li>
         <li>AI call result webhook: {origin}/api/rv/webhooks/ai-call</li>
         <li>Address chase job: {origin}/api/rv/address-chase/run (header Authorization: Bearer CRON_SECRET)</li>
       </ul>

@@ -6,7 +6,7 @@ export interface CommInput {
   customer_id?: string | null
   order_id?: string | null
   recipient_id?: string | null
-  channel: 'whatsapp' | 'call' | 'ai_call' | 'sms' | 'email' | 'note'
+  channel: 'whatsapp' | 'call' | 'ai_call' | 'sms' | 'email' | 'note' | 'instagram' | 'messenger'
   direction?: 'in' | 'out'
   mobile?: string | null
   body?: string | null

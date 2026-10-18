@@ -9,6 +9,7 @@ import { CallLogModal, CommTarget, WhatsAppModal } from '@/components/rv/CommsMo
 import { api, fmtDateTime, useFetch } from '@/lib/rv/client'
 import { LEAD_SOURCES, LEAD_STAGES, labelize } from '@/lib/rv/constants'
 import { inr } from '@/lib/rv/util'
+import LeadImportModal from '@/components/rv/LeadImportModal'
 
 const opts = (a: readonly string[]) => a.map(v => ({ value: v, label: labelize(v) }))
 
@@ -38,6 +39,7 @@ export default function LeadsPage() {
   const [convert, setConvert] = useState<any | null>(null)
   const [conv, setConv] = useState({ occasion: '', delivery_date: '' })
   const [bump, setBump] = useState(0)
+  const [imp, setImp] = useState(false)
   const others = useFetch<{ data: any[] }>(merge ? '/api/rv/r/leads?limit=500' : null)
 
   const doConvert = async () => {
@@ -63,6 +65,7 @@ export default function LeadsPage() {
         createLabel="New lead"
         modalTitle="lead"
         exportKind="leads"
+        headerExtra={<Button onClick={() => setImp(true)}>Import Excel</Button>}
         searchPlaceholder="Search name, company, mobile..."
         filters={[
           { key: 'stage', label: 'Stage', options: opts(LEAD_STAGES) },
@@ -114,6 +117,7 @@ export default function LeadsPage() {
           </Select>
         </Field>
       </Modal>
+      <LeadImportModal open={imp} onClose={() => setImp(false)} onDone={() => setBump(b => b + 1)} />
     </>
   )
 }

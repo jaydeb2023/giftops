@@ -11,7 +11,7 @@ export const ROLE_LABEL: Record<RvRole, string> = {
   rider: 'Rider / Delivery partner',
 }
 
-export const LEAD_SOURCES = ['phone', 'website', 'whatsapp', 'chatbot', 'referral', 'social', 'manual'] as const
+export const LEAD_SOURCES = ['phone', 'website', 'whatsapp', 'facebook', 'instagram', 'linkedin', 'google_ads', 'indiamart', 'justdial', 'email', 'chatbot', 'referral', 'social', 'manual'] as const
 export const LEAD_STAGES = ['new', 'contacted', 'qualified', 'quotation_sent', 'negotiation', 'converted', 'lost', 'on_hold'] as const
 export const ORDER_STATUSES = [
   'enquiry', 'quotation', 'confirmed', 'procurement', 'packing', 'ready_dispatch',

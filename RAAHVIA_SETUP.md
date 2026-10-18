@@ -33,3 +33,11 @@ Lead > convert to customer > order > import recipients from Excel (template down
 - Reports show order **contribution** (revenue minus direct costs), not accounting profit.
 - Duplicates: mobile on leads/customers, invoice per order, payment reference, recipient import rows.
 - Consult your CA before relying on GST outputs; set GSTIN and state code in Settings first.
+
+## 8. Lead sources (run `supabase/migrations/011_lead_sources.sql` first)
+All sources land in one Leads list, with one lead per phone number or social account.
+- **Website form, chatbot, IndiaMART / JustDial / Google Ads forwarders, Zapier / Make:** set `RV_LEAD_API_KEY`, then POST `{name, mobile, email, company, occasion, message, source}` to `/api/rv/public/lead` with header `x-api-key`. Add a hidden form field named `hp` that stays empty (spam trap).
+- **WhatsApp:** see section 4.
+- **Facebook + Instagram:** create one Meta app, add the Webhooks product, callback `/api/rv/webhooks/meta` with `RV_META_VERIFY_TOKEN`. Subscribe the Page to `leadgen` (lead ads) and `messages`; subscribe the Instagram account to `messages`. Set `RV_META_APP_SECRET` and a long-lived Page access token as `RV_META_PAGE_TOKEN`. Lead ads need the `leads_retrieval` permission and DMs need `pages_messaging` / `instagram_manage_messages`; Meta app review is required before real customers can use them.
+- DMs are received into the Inbox. Replying to a DM is still done in Meta's own inbox for now.
+- **Past enquiries:** Leads > Import Excel.
