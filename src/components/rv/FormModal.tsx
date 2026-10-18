@@ -35,7 +35,8 @@ export default function FormModal({ open, onClose, title, fields, initial, submi
     fields.forEach(f => {
       let x = v[f.key]
       if (f.type === 'number' && x !== '' && x !== undefined && x !== null) x = Number(x)
-      if (x === '' || x === undefined) x = null
+      if (f.type === 'checkbox') x = !!x
+      else if (x === '' || x === undefined) x = null
       out[f.key] = x
     })
     setBusy(true); setErr('')

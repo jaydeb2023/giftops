@@ -111,10 +111,14 @@ export async function getSetting<T = any>(db: Db, key: string, fallback: T): Pro
 }
 
 /** Pick only allowed keys from a body, dropping undefined. */
+const NOT_NULL_BOOL = ['active', 'consent_whatsapp', 'opt_out', 'quote_approved', 'packed', 'approved']
+
 export function pick(body: Record<string, any>, allowed: string[]): Record<string, any> {
   const out: Record<string, any> = {}
   for (const k of allowed) {
-    if (body[k] !== undefined) out[k] = body[k] === '' ? null : body[k]
+    if (body[k] === undefined) continue
+    if (NOT_NULL_BOOL.includes(k)) { out[k] = !!body[k]; continue }   // these columns are NOT NULL
+    out[k] = body[k] === '' ? null : body[k]
   }
   return out
 }

@@ -117,7 +117,8 @@ export default function ResourcePage(p: ResourcePageProps) {
       if (isEdit && f.hideOnEdit) return
       let v = form[f.key]
       if (f.type === 'number' && v !== '' && v !== undefined && v !== null) v = Number(v)
-      if (v === '' || v === undefined) v = null
+      if (f.type === 'checkbox') v = !!v
+      else if (v === '' || v === undefined) v = null
       payload[f.key] = v
     })
     if (p.transform) payload = p.transform(payload, isEdit)
