@@ -28,8 +28,8 @@ export async function POST(req: NextRequest) {
   if (!/^\S+@\S+\.\S+$/.test(email)) return fail('Enter a valid email')
   if (!RV_ROLES.includes(role as any)) return fail('Choose a role')
 
-  const { data: dupe } = await db.from('rv_staff').select('id').ilike('email', email).maybeSingle()
-  if (dupe) return fail('This email is already a staff member.')
+  const { data: dupe } = await g.raw.from('rv_staff').select('id,org_id').ilike('email', email).maybeSingle()
+  if (dupe) return fail(dupe.org_id === g.org.id ? 'This email is already a staff member.' : 'This email already belongs to another company. Use a different email.')
 
   const tempPassword = b.password ? String(b.password) : crypto.randomBytes(9).toString('base64url')
   if (tempPassword.length < 8) return fail('Password must be at least 8 characters')
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   const { data, error } = await db.from('rv_staff').insert({
     user_id: userId, email, full_name: b.full_name || email.split('@')[0], mobile: b.mobile || null, role,
   }).select().single()
-  if (error) return fail(error.message, 400)
+  if (error) return fail(error.code === '23505' ? 'This email already belongs to a company.' : error.message, 400)
   await audit(db, staff, 'rv_staff', data.id, 'create', { email, role })
   return NextResponse.json({ data, temp_password: created.error ? null : (b.password ? null : tempPassword), existing_login: !!created.error })
 }

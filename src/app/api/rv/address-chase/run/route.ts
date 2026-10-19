@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabaseServer'
-import { guard, fail, getSetting, isCronAuthorized } from '@/lib/rv/server'
+import { guard, fail, getSetting, isCronAuthorized, scopedDb, type Db } from '@/lib/rv/server'
 import { sendWhatsApp, startAiCall, waConfigured, aiCallConfigured } from '@/lib/rv/wa'
 import { logComm, openTask } from '@/lib/rv/comms'
 
@@ -18,7 +18,7 @@ const LIVE = ['confirmed', 'procurement', 'packing', 'ready_dispatch']
  * Run it from a scheduler (hourly) using  Authorization: Bearer $CRON_SECRET,  or press
  * "Run address chase now" in the Address queue. Safe to run repeatedly.
  */
-async function run(db: ReturnType<typeof createAdminClient>) {
+async function run(db: Db) {
   const cfg = await getSetting<any>(db, 'address_chase', {
     enabled: true, whatsapp_template: 'address_request', whatsapp_language: 'en',
     reminder_after_hours: 6, ai_call_after_hours: 12, human_after_hours: 24, max_attempts: 3,
@@ -51,7 +51,7 @@ async function run(db: ReturnType<typeof createAdminClient>) {
     if (oo && oo.length) { await toHuman('opted out of WhatsApp'); continue }
 
     if (r.address_status === 'pending') {
-      if (!waConfigured()) { stats.skipped_not_configured++; continue }
+      if (!(await waConfigured(db))) { stats.skipped_not_configured++; continue }
       const who = r.order?.customer?.company || r.order?.customer?.name || 'a friend'
       const when = r.order?.delivery_date || 'the planned date'
       const res = await sendWhatsApp(db, {
@@ -63,8 +63,8 @@ async function run(db: ReturnType<typeof createAdminClient>) {
         stats.whatsapp_sent++
       } else stats.errors++
     } else if (r.address_status === 'reminder_sent' && hoursSince(r.last_attempt_at) >= (cfg.ai_call_after_hours - cfg.reminder_after_hours)) {
-      if (!aiCallConfigured()) { await toHuman('AI calling not configured'); continue }
-      const res = await startAiCall({ recipient_id: r.id, name: r.name, mobile: r.mobile, existing_address: r.address_line })
+      if (!(await aiCallConfigured(db))) { await toHuman('AI calling not configured'); continue }
+      const res = await startAiCall(db, { recipient_id: r.id, name: r.name, mobile: r.mobile, existing_address: r.address_line })
       await logComm(db, { recipient_id: r.id, order_id: r.order_id, customer_id: r.order?.customer_id, channel: 'ai_call', direction: 'out', mobile: r.mobile, status: res.ok ? 'queued' : 'failed', provider_ref: res.call_id ?? null, outcome: res.ok ? null : res.error })
       if (res.ok) {
         await db.from('rv_recipients').update({ address_status: 'ai_call', address_attempts: (r.address_attempts || 0) + 1, last_attempt_at: new Date().toISOString() }).eq('id', r.id)
@@ -81,16 +81,20 @@ export async function POST(req: NextRequest) { return handle(req) }
 export async function GET(req: NextRequest) { return handle(req) }
 
 async function handle(req: NextRequest) {
-  let db: ReturnType<typeof createAdminClient>
-  if (isCronAuthorized(req)) {
-    db = createAdminClient()
-  } else {
+  try {
+    if (isCronAuthorized(req)) {
+      // scheduler: one pass for every company that is live
+      const raw = createAdminClient()
+      const { data: orgs } = await raw.from('rv_orgs').select('id,name').in('status', ['trial', 'active'])
+      const results: Record<string, any> = {}
+      for (const o of orgs || []) {
+        try { results[o.name] = await run(scopedDb(o.id, raw)) } catch (e: any) { results[o.name] = { error: e.message } }
+      }
+      return NextResponse.json({ result: results })
+    }
     const g = await guard(['sales', 'ops'])
     if (!g.ok) return g.res
-    db = g.db
-  }
-  try {
-    return NextResponse.json({ result: await run(db) })
+    return NextResponse.json({ result: await run(g.db) })
   } catch (e: any) {
     return fail(e.message || 'Address chase failed', 500)
   }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabaseServer'
+import { scopedDb } from '@/lib/rv/server'
 import { logComm, openTask } from '@/lib/rv/comms'
 import { checkAddress } from '@/lib/rv/util'
 
@@ -27,7 +28,10 @@ export async function POST(req: NextRequest) {
 
   const p = await req.json().catch(() => ({}))
   if (!p.recipient_id) return NextResponse.json({ error: 'recipient_id required' }, { status: 400 })
-  const db = createAdminClient()
+  const raw = createAdminClient()
+  const { data: rr } = await raw.from('rv_recipients').select('org_id').eq('id', p.recipient_id).maybeSingle()
+  if (!rr) return NextResponse.json({ error: 'Recipient not found' }, { status: 404 })
+  const db = scopedDb(rr.org_id, raw)
   const { data: r } = await db.from('rv_recipients').select('*, order:rv_orders(id,customer_id)').eq('id', p.recipient_id).maybeSingle()
   if (!r) return NextResponse.json({ error: 'Recipient not found' }, { status: 404 })
 

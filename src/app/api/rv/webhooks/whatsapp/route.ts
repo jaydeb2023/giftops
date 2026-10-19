@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabaseServer'
 import { logComm, openTask } from '@/lib/rv/comms'
-import { nextNo } from '@/lib/rv/server'
+import { nextNo, scopedDb } from '@/lib/rv/server'
 import { normMobile } from '@/lib/rv/util'
 
 export const dynamic = 'force-dynamic'
@@ -40,7 +40,12 @@ export async function POST(req: NextRequest) {
 
 async function handle(value: any) {
   if (!value) return
-  const db = createAdminClient()
+  const raw = createAdminClient()
+  const pid = value.metadata?.phone_number_id
+  if (!pid) return
+  const { data: org } = await raw.from('rv_orgs').select('id,status').eq('wa_phone_number_id', String(pid)).maybeSingle()
+  if (!org || org.status === 'suspended') return
+  const db = scopedDb(org.id, raw)
 
   // delivery / read / failed receipts
   for (const st of value.statuses || []) {

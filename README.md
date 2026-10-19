@@ -55,6 +55,9 @@ Your morning view. It shows what needs attention today: missing addresses, follo
 | **Expenses** | Other costs: fuel, rent, salaries, packaging. You can link an expense to an order so it counts in that order's profit. |
 | **Reports** | Profit per order (selling price minus what it cost you), who owes you and for how long, who you owe, and Excel/CSV downloads of every list. |
 
+### Platform (Evynta owners only)
+A separate console that lists every company that signed up, their logins, when they last signed in, and simple usage counts (leads, orders). You can add a company, extend a trial, mark it as paying, or suspend it. It shows numbers only, not a company's customer data. Each company's data is kept apart from every other company's.
+
 ### Settings & staff (admin only)
 - **Company & invoice:** your name, GST number, address, bank and UPI details. These appear on every invoice.
 - **Address chase:** how many hours to wait before the WhatsApp reminder, the AI call and the "person must call" task.
@@ -68,7 +71,7 @@ Your morning view. It shows what needs attention today: missing addresses, follo
 
 | Role | Sees |
 |---|---|
-| **Admin** | Everything, including settings and staff. The first person to sign up becomes admin. |
+| **Admin** | Everything, including settings and staff. The person who creates the company account becomes its admin. |
 | **Sales** | Leads, customers, orders, inbox, address queue, invoices (view). |
 | **Operations** | Orders, vendors, purchases, packing, delivery runs, exceptions, rider app, bills, reports. |
 | **Finance** | Customers, orders, invoices, payments, bills, expenses, reports. |
@@ -99,7 +102,7 @@ Your morning view. It shows what needs attention today: missing addresses, follo
 
 Until these are connected, the system still works. The address chase simply creates "please call this person" tasks for your team.
 
-**Not built yet (ideas for later):** replying to Instagram/Facebook messages from inside GiftOps, a customer self-service tracking page, online payment links, e-invoicing / e-way bill, and separate workspaces for many client companies in one installation.
+**Not built yet (ideas for later):** replying to Instagram/Facebook messages from inside GiftOps, a customer self-service tracking page, online payment links, e-invoicing / e-way bill, online subscription billing.
 
 ---
 
@@ -117,9 +120,10 @@ Until these are connected, the system still works. The address chase simply crea
 
 The system is a web app (Next.js) with a Supabase database, hosted on Vercel. Step-by-step setup, the list of settings keys, WhatsApp / AI-call / Instagram connection steps and the daily-chase schedule are in **`RAAHVIA_SETUP.md`**. In short:
 
-1. Run the SQL files in `supabase/migrations/` (010, then 011) in the Supabase SQL editor.
+1. Run the SQL files in `supabase/migrations/` (010, 011, then 012) in the Supabase SQL editor.
 2. Add the environment variables from `.env.example` in Vercel, then redeploy.
-3. Open `/app/login`, create the first account (it becomes admin), then fill in Settings.
+3. Set `RV_SUPER_ADMIN_EMAILS` to your email. Open `/app/login`; you will see the **Platform** page listing every company, login and sign-up.
+4. A new customer visits `/app/login`, clicks "Start a 14-day free trial", enters a company name and gets a private workspace. You can suspend or activate any company from Platform.
 
 ---
 

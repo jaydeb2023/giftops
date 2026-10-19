@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabaseServer'
 import { intakeLead } from '@/lib/rv/leadIntake'
 import { logComm } from '@/lib/rv/comms'
+import { scopedDb } from '@/lib/rv/server'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -11,7 +12,7 @@ export const runtime = 'nodejs'
  * One webhook for Facebook + Instagram (Meta app):
  *  - Lead Ads form submissions   (page field "leadgen")
  *  - Messenger and Instagram DMs (messaging events)  -> become / update a lead
- * Env: RV_META_VERIFY_TOKEN, RV_META_APP_SECRET, RV_META_PAGE_TOKEN (needed to read lead-ad details and sender names)
+ * Env: RV_META_VERIFY_TOKEN, RV_META_APP_SECRET, (page token + page id are stored per company)
  */
 const GRAPH = `https://graph.facebook.com/${process.env.RV_META_GRAPH_VERSION || 'v21.0'}`
 
@@ -33,18 +34,22 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = JSON.parse(raw)
-    const db = createAdminClient()
+    const adm = createAdminClient()
     const isIg = body.object === 'instagram'
     for (const entry of body.entry || []) {
-      for (const ch of entry.changes || []) if (ch.field === 'leadgen') await leadAd(db, ch.value)
-      for (const m of entry.messaging || []) await dm(db, m, isIg ? 'instagram' : 'facebook')
+      const col = isIg ? 'meta_ig_id' : 'meta_page_id'
+      const { data: org } = await adm.from('rv_orgs').select('id,status,integrations').eq(col, String(entry.id)).maybeSingle()
+      if (!org || org.status === 'suspended') continue
+      const db = scopedDb(org.id, adm)
+      const token: string | undefined = (org.integrations as any)?.meta_page_token
+      for (const ch of entry.changes || []) if (ch.field === 'leadgen') await leadAd(db, ch.value, token)
+      for (const m of entry.messaging || []) await dm(db, m, isIg ? 'instagram' : 'facebook', token)
     }
   } catch (e) { console.error('[rv meta webhook]', e) }
   return NextResponse.json({ received: true })
 }
 
-async function leadAd(db: any, v: any) {
-  const token = process.env.RV_META_PAGE_TOKEN
+async function leadAd(db: any, v: any, token?: string) {
   if (!token || !v?.leadgen_id) return
   const res = await fetch(`${GRAPH}/${v.leadgen_id}?access_token=${encodeURIComponent(token)}`)
   const j: any = await res.json().catch(() => null)
@@ -60,13 +65,12 @@ async function leadAd(db: any, v: any) {
   })
 }
 
-async function dm(db: any, m: any, source: 'facebook' | 'instagram') {
+async function dm(db: any, m: any, source: 'facebook' | 'instagram', token?: string) {
   const sender = m?.sender?.id
   const text = m?.message?.text
   if (!sender || !m?.message || m.message.is_echo) return
   const body = text || `[${m.message.attachments?.[0]?.type || 'attachment'}]`
   let name = ''
-  const token = process.env.RV_META_PAGE_TOKEN
   if (token) {
     try {
       const r = await fetch(`${GRAPH}/${sender}?fields=${source === 'instagram' ? 'name,username' : 'name'}&access_token=${encodeURIComponent(token)}`)

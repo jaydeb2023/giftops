@@ -52,29 +52,49 @@ function Staff() {
   </div>
 }
 
-function Integrations({ p }: { p: any }) {
+function Integrations({ p, c, reload }: { p: any; c: any; reload: () => void }) {
   const origin = typeof window !== 'undefined' ? (p.app_url || window.location.origin) : p.app_url
-  const row = (label: string, ok: boolean, hint: string) => <tr><Td>{label}</Td><Td>{ok ? <Badge value="connected" /> : <Badge value="not_set" />}</Td><Td className="text-xs text-gray-600">{hint}</Td></tr>
+  const [v, setV] = useState<Record<string, any>>({})
+  const [busy, setBusy] = useState(false)
+  useEffect(() => setV({ wa_phone_number_id: c?.wa_phone_number_id || '', meta_page_id: c?.meta_page_id || '', meta_ig_id: c?.meta_ig_id || '', ai_call_api_url: c?.ai_call_api_url || '', ai_call_script: c?.ai_call_script || '', wa_token: '', ai_call_api_key: '', meta_page_token: '' }), [c])
+  const save = async () => { setBusy(true); try { await api('/api/rv/settings', { method: 'PUT', body: { connections: v } }); toast.success('Saved'); reload() } catch (e: any) { toast.error(e.message) } finally { setBusy(false) } }
+  const rotate = async () => { if (!confirm('Make a new key? Forms using the old key will stop working until updated.')) return; try { await api('/api/rv/settings', { method: 'PUT', body: { rotate_lead_key: true } }); reload() } catch (e: any) { toast.error(e.message) } }
+  const row = (label: string, ok: boolean) => <tr><Td>{label}</Td><Td>{ok ? <Badge value="connected" /> : <Badge value="not_set" />}</Td></tr>
+  const set = (k: string, label: string, help?: string, secret?: boolean) => <Field label={label} help={help}><Input type={secret ? 'password' : 'text'} value={v[k] ?? ''} placeholder={secret && c?.has?.[k] ? 'saved (leave blank to keep)' : ''} onChange={e => setV({ ...v, [k]: e.target.value })} /></Field>
   return <div className="space-y-4">
-    <Table head={['Integration', 'Status', 'What to set']}>
-      {row('WhatsApp Cloud API', p.whatsapp, 'RV_WA_PHONE_NUMBER_ID, RV_WA_TOKEN')}
-      {row('WhatsApp webhook signature', p.whatsapp_webhook_secret, 'RV_WA_APP_SECRET (Meta app secret) and RV_WA_VERIFY_TOKEN')}
-      {row('AI calling provider', p.ai_call, 'RV_AI_CALL_API_URL, RV_AI_CALL_API_KEY (optional RV_AI_CALL_SCRIPT)')}
-      {row('AI call callback secret', p.ai_call_callback_secret, 'RV_AI_CALL_SECRET, sent by the provider in header x-rv-secret')}
-      {row('Website / chatbot / forwarder lead URL', p.lead_api, 'RV_LEAD_API_KEY (any long random string)')}
-      {row('Facebook + Instagram webhook', p.meta, 'RV_META_VERIFY_TOKEN, RV_META_APP_SECRET')}
-      {row('Facebook + Instagram page token', p.meta_page_token, 'RV_META_PAGE_TOKEN (reads lead-ad details and sender names)')}
-      {row('Scheduled chase (cron)', p.cron_secret, 'CRON_SECRET, call the URL below every 30-60 minutes')}
+    <Table head={['Connection', 'Status']}>
+      {row('WhatsApp (your own business number)', p.whatsapp)}
+      {row('AI calling provider', p.ai_call)}
+      {row('Website / chatbot / IndiaMART lead form', p.lead_api)}
+      {row('Facebook + Instagram', p.meta)}
     </Table>
-    <Card title="URLs to configure">
+    {c && <>
+      <Card title="Website, chatbot and lead forwarders">
+        <p className="mb-2 text-xs text-gray-600">Send leads to this address (POST). Your private key identifies your company, so keep it secret.</p>
+        <div className="space-y-1 break-all font-mono text-xs"><div>URL: {origin}/api/rv/public/lead</div><div>Header x-api-key: {c.lead_api_key}</div></div>
+        <div className="mt-3"><Button size="sm" onClick={rotate}>Make a new key</Button></div>
+      </Card>
+      <Card title="Your WhatsApp, calls and Facebook / Instagram">
+        <div className="grid gap-3 sm:grid-cols-2">
+          {set('wa_phone_number_id', 'WhatsApp phone number ID', 'From Meta WhatsApp Cloud API')}
+          {set('wa_token', 'WhatsApp access token', undefined, true)}
+          {set('meta_page_id', 'Facebook page ID')}
+          {set('meta_ig_id', 'Instagram account ID')}
+          {set('meta_page_token', 'Facebook / Instagram page token', undefined, true)}
+          {set('ai_call_api_url', 'AI calling provider URL')}
+          {set('ai_call_api_key', 'AI calling API key', undefined, true)}
+          {set('ai_call_script', 'AI call script name', 'optional')}
+        </div>
+        <div className="mt-4"><Button variant="primary" loading={busy} onClick={save}>Save connections</Button></div>
+      </Card>
+    </>}
+    <Card title="Webhook addresses to give Meta / your providers">
       <ul className="space-y-1 font-mono text-xs break-all">
         <li>WhatsApp webhook: {origin}/api/rv/webhooks/whatsapp</li>
-        <li>Lead capture (POST, header x-api-key): {origin}/api/rv/public/lead</li>
         <li>Facebook / Instagram webhook: {origin}/api/rv/webhooks/meta</li>
         <li>AI call result webhook: {origin}/api/rv/webhooks/ai-call</li>
-        <li>Address chase job: {origin}/api/rv/address-chase/run (header Authorization: Bearer CRON_SECRET)</li>
       </ul>
-      <p className="mt-3 text-xs text-gray-500">WhatsApp needs an approved template named in Address chase settings (default <b>address_request</b>) with 3 variables: recipient name, customer name, delivery date. Environment variables are set on your host (e.g. Vercel) and need a redeploy.</p>
+      <p className="mt-3 text-xs text-gray-500">WhatsApp needs an approved template named in Address chase settings (default <b>address_request</b>) with 3 variables: recipient name, customer name, delivery date. Each company connects its own accounts here; Evynta only sets the shared Meta app secret.</p>
     </Card></div>
 }
 
@@ -104,7 +124,7 @@ export default function SettingsPage() {
           { key: 'enabled', label: 'Automatic chase on', type: 'bool' }, { key: 'whatsapp_template', label: 'WhatsApp template name' }, { key: 'whatsapp_language', label: 'Template language code' },
           { key: 'reminder_after_hours', label: 'Send WhatsApp after (hours)', type: 'number' }, { key: 'ai_call_after_hours', label: 'AI call after (hours)', type: 'number' },
           { key: 'human_after_hours', label: 'Human call task after (hours)', type: 'number' }, { key: 'max_attempts', label: 'Max attempts', type: 'number' }]} />
-        : tab === 'staff' ? <Staff /> : tab === 'integrations' ? <Integrations p={data.providers} /> : <Audit />
+        : tab === 'staff' ? <Staff /> : tab === 'integrations' ? <Integrations p={data.providers} c={data.connections} reload={reload} /> : <Audit />
       )}
       {tab === 'staff' && !data && <Staff />}
     </div></div>
