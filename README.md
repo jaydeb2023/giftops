@@ -1,162 +1,126 @@
-# Kaaj AI — কাজ AI
+# GiftOps by Evynta
 
-**Bengali-first AI Agent Platform** for West Bengal and Bangladesh.
+**One system to run a gift-delivery business, from the first enquiry to the final payment.**
 
-> Create powerful AI agents in natural Bengali. For shop owners, students, families, and communities.
+GiftOps is built for companies that send gifts to *many* people at once, such as corporate gifting, festival hampers and bulk orders with hundreds of recipients. It replaces the mix of WhatsApp chats, Excel sheets, paper delivery slips and separate billing software with a single place that the whole team uses.
 
----
-
-## Quick Start
-
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/YOUR_USERNAME/kaaj-ai.git
-cd kaaj-ai
-npm install
-```
-
-### 2. Environment Variables
-
-Copy `.env.example` to `.env.local`:
-
-```bash
-cp .env.example .env.local
-```
-
-Fill in your keys:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-ANTHROPIC_API_KEY=sk-ant-...
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-### 3. Supabase Setup
-
-1. Go to [supabase.com](https://supabase.com) → New Project
-2. Go to **SQL Editor** → paste contents of `supabase/migrations/001_initial_schema.sql` → Run
-3. Copy your **Project URL** and **anon key** from Settings → API
-
-### 4. Anthropic API
-
-1. Go to [console.anthropic.com](https://console.anthropic.com)
-2. Create API key → copy it to `.env.local`
-
-### 5. Run Locally
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
+Address: `https://giftops.evynta.in/app`
 
 ---
 
-## Deploy to Vercel
+## The story of one order (how everything fits together)
 
-### One-click deploy:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-### Manual:
-
-```bash
-npm install -g vercel
-vercel
-```
-
-Add environment variables in Vercel Dashboard → Settings → Environment Variables.
+1. **An enquiry arrives.** It comes from a phone call, the website, WhatsApp, Instagram or Facebook. It appears in **Leads**.
+2. **Sales follows up and wins it.** One click turns the lead into a **Customer** with an **Order**.
+3. **The recipient list is uploaded.** The customer sends an Excel sheet with names, phone numbers and addresses. You upload it into the order.
+4. **Missing addresses are chased automatically.** For recipients with no address, the system asks on WhatsApp, then makes an AI call, then gives a person a "please call" task. A person always checks the address before it counts.
+5. **Gifts are bought and packed.** Orders to vendors are tracked in **Purchases**. Packing and quality checks are ticked off in **Packing & QC**.
+6. **Deliveries are planned.** Stops are grouped into **Delivery runs**, and each run is given to a rider.
+7. **The rider delivers.** On a phone, the rider taps call, navigate, delivered, and takes a photo as proof.
+8. **The customer is billed.** One click creates a **GST invoice** from the order. Payments are recorded against it.
+9. **You see if you made money.** **Reports** show the profit on every order and who owes what.
 
 ---
 
-## Project Structure
+## Every section, in plain words
 
-```
-kaaj-ai/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx              # Landing page
-│   │   ├── library/page.tsx      # Agent marketplace
-│   │   ├── agents/
-│   │   │   ├── new/page.tsx      # Create agent
-│   │   │   └── [id]/page.tsx     # Run agent
-│   │   ├── dashboard/page.tsx    # User dashboard
-│   │   ├── login/page.tsx        # Auth
-│   │   └── api/
-│   │       ├── chat/route.ts     # Claude AI chat endpoint
-│   │       └── agents/route.ts   # Agent CRUD
-│   ├── components/
-│   │   ├── Navbar.tsx
-│   │   ├── AgentCard.tsx
-│   │   ├── AgentRunner.tsx       # Chat interface
-│   │   └── AgentBuilderForm.tsx  # Create agent form
-│   ├── lib/
-│   │   ├── supabaseClient.ts
-│   │   ├── supabaseServer.ts
-│   │   └── agentUtils.ts         # Prompt builder
-│   └── types/index.ts            # TypeScript types + prebuilt agents
-└── supabase/
-    └── migrations/001_initial_schema.sql
-```
+### Dashboard
+Your morning view. It shows what needs attention today: missing addresses, follow-ups due, failed deliveries, how many gifts are out for delivery, money owed to you and money you owe.
 
----
+### Sales
+| Section | What it is for |
+|---|---|
+| **Leads** | Everyone who has enquired but not yet bought. You can add leads by hand, import them from Excel, or let them arrive automatically from your website, WhatsApp, Instagram or Facebook. The same person is never added twice. You can mark each lead as contacted, qualified, won or lost, and set a follow-up reminder. |
+| **Customers** | Companies or people who have bought. It holds their billing details and GST number, and the history of everything you have done for them. |
+| **Orders** | The heart of the system. One order = one customer + the items + the list of recipients. It has tabs: Overview, Items, Recipients, Purchases, Finance, Activity. It shows how many gifts are delivered, pending or failed. |
+| **Inbox & calls** | Every WhatsApp message and phone call in one timeline, per person. You can reply and note down a call without leaving the page. |
 
-## Features
+### Operations
+| Section | What it is for |
+|---|---|
+| **Address queue** | A to-do list of recipients whose address is missing or unconfirmed. You see the status of the automatic chase (asked, called, replied) and confirm the final address. |
+| **Vendors** | Your suppliers: gift makers, packaging shops, couriers. |
+| **Purchases** | What you ordered from vendors for each order, the cost, and whether it has arrived. |
+| **Packing & QC** | A checklist for the packing table. Mark each gift packed and quality-checked. |
+| **Delivery runs** | A "run sheet" for one rider and one trip. Add stops, set their order, print the sheet, and see the cost of the trip. |
+| **Exceptions** | The problems: failed deliveries, wrong addresses, recipient not available. Each one becomes a task so nothing is forgotten. |
+| **Rider app** | A simple phone page for riders. They see only their own stops. For each stop they can call, open the map, mark delivered with a photo, or note why it failed. |
 
-- **Bengali-first**: All UI and AI responses in natural Bengali
-- **Agent Builder**: Describe in Bengali → AI creates structured agent
-- **Agent Runner**: Real-time chat with Claude AI
-- **Library**: Pre-built agents (Dokan Manager, Porashona Sahayak, etc.)
-- **Dashboard**: Manage your agents
-- **Supabase Auth**: Email/password authentication
-- **Persistent Memory**: Conversations saved per agent
+### Finance
+| Section | What it is for |
+|---|---|
+| **Invoices** | GST invoices made straight from an order. The tax split (CGST and SGST, or IGST) is worked out automatically. You can print or save as PDF, and issue credit notes for returns or corrections. |
+| **Payments received** | Money that came in, with the bank reference. The system stops you recording the same payment twice. |
+| **Vendor & courier bills** | Bills you have to pay, and what is still unpaid. |
+| **Expenses** | Other costs: fuel, rent, salaries, packaging. You can link an expense to an order so it counts in that order's profit. |
+| **Reports** | Profit per order (selling price minus what it cost you), who owes you and for how long, who you owe, and Excel/CSV downloads of every list. |
 
-## Subscriptions (₹199/month, 7-day free trial)
-
-1. Run `supabase/migrations/008_subscriptions_admin.sql` in the Supabase SQL Editor (after 001–007).
-   This adds the `subscriptions` table, an `is_admin` flag on `profiles`, and auto-starts a
-   7-day trial for every new signup via the existing `handle_new_user()` trigger.
-2. In your [Razorpay Dashboard](https://dashboard.razorpay.com) → **Settings → API Keys**,
-   generate a Key ID + Key Secret and add them as `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET`.
-3. In **Settings → Webhooks**, add a webhook pointed at `https://YOUR_DOMAIN/api/webhooks/razorpay`,
-   subscribed to the `payment_link.paid` event. Copy its secret into `RAZORPAY_WEBHOOK_SECRET`.
-4. Deploy. When a trial expires (or a non-subscriber hits a locked agent), they're sent to
-   `/subscribe`, which calls `/api/razorpay/create-link` to generate a ₹199 UPI/card payment link
-   per user. On payment, Razorpay's webhook activates their subscription for 30 days.
-5. **No card is collected upfront** — trial users are simply locked out of the Library and custom
-   Agent Builder once `trial_ends_at` passes, until they pay.
-
-## Super Admin
-
-Promote your own account after signing up:
-
-```sql
-update public.profiles set is_admin = true where email = 'YOUR_EMAIL';
-```
-
-Admins get an **Admin** link in the navbar leading to `/admin`, which lists every signup, their
-trial/subscription status, agent count, last payment date, and estimated MRR — powered by
-`/api/admin/users` (service-role, admin-gated).
-
-## Prebuilt Agents
-
-| Agent | Category | Use Case |
-|-------|----------|----------|
-| দোকান ম্যানেজার | Business | Shop sales, stock, credit tracking |
-| পড়াশোনা সহায়ক | Education | Exam prep, study planning |
-| পূজা অর্গানাইজার | Festival | Festival budget, committee tasks |
-| বাজেট সহায়ক | Finance | Family budget, savings advice |
-
-## Tech Stack
-
-- **Frontend**: Next.js 14 (App Router) + TypeScript + Tailwind CSS
-- **Database**: Supabase (PostgreSQL + Auth + Storage)
-- **AI**: Anthropic Claude (`claude-sonnet-4-20250514`)
-- **Deployment**: Vercel
+### Settings & staff (admin only)
+- **Company & invoice:** your name, GST number, address, bank and UPI details. These appear on every invoice.
+- **Address chase:** how many hours to wait before the WhatsApp reminder, the AI call and the "person must call" task.
+- **Staff:** add team members and choose what each can see (see roles below).
+- **Integrations:** shows which connections (WhatsApp, AI calling, Instagram, website form) are switched on.
+- **Audit log:** a record of who changed what and when.
 
 ---
 
-Made with ❤️ for West Bengal & Bangladesh
+## Who can see what
+
+| Role | Sees |
+|---|---|
+| **Admin** | Everything, including settings and staff. The first person to sign up becomes admin. |
+| **Sales** | Leads, customers, orders, inbox, address queue, invoices (view). |
+| **Operations** | Orders, vendors, purchases, packing, delivery runs, exceptions, rider app, bills, reports. |
+| **Finance** | Customers, orders, invoices, payments, bills, expenses, reports. |
+| **Rider** | Only their own rider page on their phone. |
+
+---
+
+## How leads get in (all into one Leads list)
+
+| Source | Status |
+|---|---|
+| Typed in by staff (phone, referral) | Works now |
+| Excel import of old leads | Works now |
+| Website form, chatbot, IndiaMART, JustDial, Zapier | Works once you set a secret key (see setup guide) |
+| WhatsApp messages | Needs a WhatsApp Business account connected |
+| Facebook and Instagram (lead forms and messages) | Needs a Meta app and Meta's approval |
+
+---
+
+## What works today and what needs connecting
+
+**Works as soon as it is deployed:** leads, customers, orders, Excel recipient upload, address queue, vendors, purchases, packing, delivery runs, rider page with photo proof, invoices, payments, bills, expenses, reports, staff logins, website lead form.
+
+**Needs an account or approval first (code is ready, switched off until you connect it):**
+- **WhatsApp messages and the automatic address chase.** Needs a WhatsApp Business number approved by Meta and an approved message template.
+- **AI phone calls.** Needs an AI-calling provider account.
+- **Instagram and Facebook.** Needs a Meta app, and Meta's review for messaging permissions.
+
+Until these are connected, the system still works. The address chase simply creates "please call this person" tasks for your team.
+
+**Not built yet (ideas for later):** replying to Instagram/Facebook messages from inside GiftOps, a customer self-service tracking page, online payment links, e-invoicing / e-way bill, and separate workspaces for many client companies in one installation.
+
+---
+
+## Good to know
+
+- **Profit report = gross margin.** It is selling price minus the direct costs of that order. It is not your final accounting profit. Ask your accountant before using it for tax.
+- **Addresses are never overwritten automatically.** A reply from WhatsApp or an AI call is only a *suggestion* until a person confirms it.
+- **Nothing is deleted by accident.** Important changes are recorded in the audit log.
+- **GST.** Fill in your GST number and state in Settings before issuing the first invoice, and have your accountant check the output.
+- **Data safety.** Your data lives in your own database account (Supabase). Turn on backups there.
+
+---
+
+## For whoever sets it up (technical, short)
+
+The system is a web app (Next.js) with a Supabase database, hosted on Vercel. Step-by-step setup, the list of settings keys, WhatsApp / AI-call / Instagram connection steps and the daily-chase schedule are in **`RAAHVIA_SETUP.md`**. In short:
+
+1. Run the SQL files in `supabase/migrations/` (010, then 011) in the Supabase SQL editor.
+2. Add the environment variables from `.env.example` in Vercel, then redeploy.
+3. Open `/app/login`, create the first account (it becomes admin), then fill in Settings.
+
+---
+
+*GiftOps is made by Evynta.*

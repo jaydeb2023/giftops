@@ -1,6 +1,6 @@
-# Raahvia CRM + OMS - setup guide
+# GiftOps - technical setup guide
 
-Built on the Kaaj AI codebase (Next.js 14 + Supabase). Product home: `/raahvia` (the `/` URL redirects there).
+Built on the Kaaj AI codebase (Next.js 14 + Supabase). Product home: `/app` (the `/` URL redirects there).
 The original Kaaj pages are untouched and still reachable.
 
 ## 1. Database
@@ -10,7 +10,7 @@ Supabase > SQL editor > run `supabase/migrations/010_raahvia_crm.sql` once. It c
 Copy the Raahvia block from `.env.example`. Required: the existing Supabase keys (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) and `NEXT_PUBLIC_APP_URL`. WhatsApp, AI calling and cron variables are optional until you connect those services; the app works without them (messages are logged as failed, human call tasks still get created).
 
 ## 3. First login
-Open `/raahvia/login`, sign up. The first user becomes **admin** (set `RV_ADMIN_EMAILS` to restrict who can claim this). Then Settings > Staff to add sales, ops, finance and rider logins.
+Open `/app/login`, sign up. The first user becomes **admin** (set `RV_ADMIN_EMAILS` to restrict who can claim this). Then Settings > Staff to add sales, ops, finance and rider logins.
 
 Roles: admin (everything), sales (leads, customers, inbox, orders), ops (orders, vendors, purchases, packing, delivery), finance (invoices, payments, bills, reports), rider (own mobile run page only).
 
