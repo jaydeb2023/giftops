@@ -47,7 +47,7 @@ export default function LeadsPage() {
       const r = await api<{ order_id: string | null; customer_id: string }>(`/api/rv/leads/${convert.id}/convert`, { body: { ...conv, create_order: true } })
       toast.success('Converted to customer and order created')
       setConvert(null)
-      if (r.order_id) router.push(`/raahvia/orders/${r.order_id}`)
+      if (r.order_id) router.push(`/app/orders/${r.order_id}`)
     } catch (e: any) { toast.error(e.message) }
   }
   const doMerge = async () => {

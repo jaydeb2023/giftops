@@ -56,7 +56,7 @@ export default function FinanceTab({ d, reload, role }: { d: OrderDetail; reload
             <Table head={['Invoice', 'Date', 'Due', 'Taxable', 'GST', 'Total', 'Paid', 'Status', '']}>
               {d.invoices.map(i => (
                 <tr key={i.id}>
-                  <Td><Link className="font-medium text-rv-700 hover:underline" href={`/raahvia/invoices/${i.id}`}>{i.invoice_no}</Link>{i.doc_type === 'credit_note' && <span className="ml-1 text-xs text-gray-500">(credit note)</span>}</Td>
+                  <Td><Link className="font-medium text-rv-700 hover:underline" href={`/app/invoices/${i.id}`}>{i.invoice_no}</Link>{i.doc_type === 'credit_note' && <span className="ml-1 text-xs text-gray-500">(credit note)</span>}</Td>
                   <Td>{fmtDate(i.invoice_date)}</Td><Td>{fmtDate(i.due_date)}</Td>
                   <Td>{inr(i.taxable_value)}</Td><Td>{inr(Number(i.cgst) + Number(i.sgst) + Number(i.igst))}</Td>
                   <Td className="font-medium">{inr(i.total)}</Td><Td>{inr(i.paid_amount)}</Td>

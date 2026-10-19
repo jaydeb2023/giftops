@@ -33,8 +33,8 @@ export default function DeliveryPage() {
       filters={[{ key: 'status', label: 'Status', options: RUN_STATUSES.map(v => ({ value: v, label: labelize(v) })) }]}
       fields={fields}
       canDelete
-      onRowClick={r => router.push(`/raahvia/delivery/${r.id}`)}
-      onCreated={r => router.push(`/raahvia/delivery/${r.id}`)}
+      onRowClick={r => router.push(`/app/delivery/${r.id}`)}
+      onCreated={r => router.push(`/app/delivery/${r.id}`)}
       columns={[
         { key: 'run_no', label: 'Run', render: r => <span className="font-mono text-xs font-semibold text-rv-800">{r.run_no}</span> },
         { key: 'run_date', label: 'Date', render: r => fmtDate(r.run_date) },

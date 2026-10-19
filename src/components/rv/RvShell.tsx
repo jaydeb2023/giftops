@@ -13,7 +13,7 @@ import { Spinner, cx } from './ui'
 
 export default function RvShell({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const pathname = usePathname() || '/raahvia'
+  const pathname = usePathname() || '/app'
   const [me, setMe] = useState<StaffMe | null>(null)
   const [state, setState] = useState<'loading' | 'ok' | 'denied'>('loading')
   const [deniedMsg, setDeniedMsg] = useState('')
@@ -23,7 +23,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
     api<{ staff: StaffMe }>('/api/rv/me')
       .then(r => { setMe(r.staff); setState('ok') })
       .catch((e: ApiError) => {
-        if (e.status === 401) router.replace(`/raahvia/login?next=${encodeURIComponent(pathname)}`)
+        if (e.status === 401) router.replace(`/app/login?next=${encodeURIComponent(pathname)}`)
         else { setDeniedMsg(e.message); setState('denied') }
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -32,7 +32,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
   // role-based route guard (server checks are the real protection; this only keeps the UI tidy)
   useEffect(() => {
     if (!me) return
-    const sub = pathname.replace(/^\/raahvia/, '') || ''
+    const sub = pathname.replace(/^\/app/, '') || ''
     const first = sub === '' ? '' : '/' + sub.split('/')[1]
     if (first === '' && !canSee(me.role, '')) router.replace(defaultPath(me.role))
     else if (first !== '' && NAV.some(n => n.href === first) && !canSee(me.role, first)) router.replace(defaultPath(me.role))
@@ -40,7 +40,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => { setOpen(false) }, [pathname])
 
-  const signOut = async () => { await supabase.auth.signOut(); router.replace('/raahvia/login') }
+  const signOut = async () => { await supabase.auth.signOut(); router.replace('/app/login') }
 
   if (state === 'loading') return <div className="flex min-h-screen items-center justify-center"><Spinner className="h-8 w-8" /></div>
   if (state === 'denied' || !me) {
@@ -57,7 +57,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
 
   const items = NAV.filter(n => n.roles.includes(me.role) || me.role === 'admin')
   const groups = Array.from(new Set(items.map(i => i.group)))
-  const isActive = (href: string) => (href === '' ? pathname === '/raahvia' : pathname.startsWith('/raahvia' + href))
+  const isActive = (href: string) => (href === '' ? pathname === '/app' : pathname.startsWith('/app' + href))
 
   const sidebar = (
     <nav className="flex h-full flex-col bg-rv-900 text-rv-100">
@@ -69,7 +69,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
           <div key={g}>
             <div className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-rv-300/70">{g}</div>
             {items.filter(i => i.group === g).map(i => (
-              <Link key={i.href} href={`/raahvia${i.href}`}
+              <Link key={i.href} href={`/app${i.href}`}
                 className={cx('block rounded-lg px-3 py-2 text-sm transition', isActive(i.href) ? 'bg-rv-700 font-semibold text-white' : 'text-rv-100 hover:bg-rv-800')}>
                 {i.label}
               </Link>

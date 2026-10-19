@@ -21,7 +21,7 @@ function Profit() {
         <p className="text-xs text-gray-500">{data.note || 'Contribution is revenue less direct order costs (gross margin), not accounting profit.'} Orders not yet invoiced use the quoted value.</p>
         <Table head={['Order', 'Customer', 'Date', 'Recipients', 'Revenue', 'Products', 'Delivery', 'Other', 'Contribution', 'Margin']}>
           {data.rows.map((r: any) => (
-            <tr key={r.order_id}><Td><Link className="text-rv-700 hover:underline" href={`/raahvia/orders/${r.order_id}`}>{r.order_no}</Link></Td><Td>{r.customer}</Td><Td>{fmtDate(r.delivery_date)}</Td><Td>{r.recipients}</Td>
+            <tr key={r.order_id}><Td><Link className="text-rv-700 hover:underline" href={`/app/orders/${r.order_id}`}>{r.order_no}</Link></Td><Td>{r.customer}</Td><Td>{fmtDate(r.delivery_date)}</Td><Td>{r.recipients}</Td>
               <Td>{inr(r.revenue)}{!r.invoiced && <span className="ml-1 text-[10px] text-gray-400">quote</span>}</Td><Td>{inr(r.product_cost)}</Td><Td>{inr(r.delivery_cost)}</Td><Td>{inr(Number(r.other_bills) + Number(r.expenses))}</Td>
               <Td className={`font-medium ${r.contribution < 0 ? 'text-red-600' : ''}`}>{inr(r.contribution)}</Td><Td>{r.margin_pct}%</Td></tr>
           ))}

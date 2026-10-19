@@ -9,7 +9,7 @@ import { Button, Field, Input } from '@/components/rv/ui'
 function Form() {
   const router = useRouter()
   const sp = useSearchParams()
-  const next = sp.get('next') || '/raahvia'
+  const next = sp.get('next') || '/app'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)

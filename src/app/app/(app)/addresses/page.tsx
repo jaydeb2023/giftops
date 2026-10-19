@@ -50,7 +50,7 @@ export default function AddressQueue() {
           {rows.map(r => (
             <tr key={r.id} className="hover:bg-gray-50">
               <Td><div className="font-medium">{r.name}</div><div className="text-xs text-gray-500">{r.mobile || <span className="text-amber-600">no mobile</span>}</div></Td>
-              <Td><Link className="text-rv-700 hover:underline" href={`/raahvia/orders/${r.order_id}`}>{r.order?.order_no}</Link><div className="text-xs text-gray-500">{r.order?.delivery_date || ''}</div></Td>
+              <Td><Link className="text-rv-700 hover:underline" href={`/app/orders/${r.order_id}`}>{r.order?.order_no}</Link><div className="text-xs text-gray-500">{r.order?.delivery_date || ''}</div></Td>
               <Td className="max-w-[280px]"><div className="truncate">{r.address_line || <span className="text-amber-600">Missing</span>}</div><div className="text-xs text-gray-500">{r.pincode || ''}</div>
                 {r.suggested_address && <div className="mt-1 truncate text-xs text-purple-700" title={r.suggested_address}>Suggestion: {r.suggested_address}</div>}</Td>
               <Td><Badge value={r.address_status} /></Td>

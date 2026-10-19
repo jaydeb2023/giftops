@@ -10,7 +10,7 @@ export const FULL_SCREEN_APP_ROUTES = ['/dashboard', '/team']
 
 // Whole sections that bring their own shell (every /admin/... page is rendered
 // inside app/admin/layout.tsx, which has its own sidebar, topbar and mobile nav).
-const FULL_SCREEN_APP_PREFIXES = ['/admin', '/raahvia']
+const FULL_SCREEN_APP_PREFIXES = ['/admin', '/app']
 
 export function isFullScreenAppRoute(pathname: string | null): boolean {
   if (!pathname) return false

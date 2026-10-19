@@ -81,7 +81,7 @@ export default function OrderPage() {
 
   return (
     <div>
-      <Link href="/raahvia/orders" className="mb-3 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-rv-700"><ArrowLeft className="h-4 w-4" />All orders</Link>
+      <Link href="/app/orders" className="mb-3 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-rv-700"><ArrowLeft className="h-4 w-4" />All orders</Link>
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="flex flex-wrap items-center gap-2">
@@ -115,8 +115,8 @@ export default function OrderPage() {
               <Progress label="Out for delivery / delivered" n={c.delivered + c.in_transit} total={c.recipients} tone="bg-amber-500" />
               <Progress label="Delivered" n={c.delivered} total={c.recipients} tone="bg-sky-500" />
             </div>
-            {c.address_open > 0 && <div className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">{c.address_open} address(es) still need verifying. <Link href="/raahvia/addresses" className="font-medium underline">Open address queue</Link></div>}
-            {c.failed > 0 && <div className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800">{c.failed} failed deliver{c.failed === 1 ? 'y' : 'ies'}. <Link href="/raahvia/exceptions" className="font-medium underline">Open exceptions</Link></div>}
+            {c.address_open > 0 && <div className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">{c.address_open} address(es) still need verifying. <Link href="/app/addresses" className="font-medium underline">Open address queue</Link></div>}
+            {c.failed > 0 && <div className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800">{c.failed} failed deliver{c.failed === 1 ? 'y' : 'ies'}. <Link href="/app/exceptions" className="font-medium underline">Open exceptions</Link></div>}
             {canEdit && ['enquiry', 'quotation'].includes(o.status) && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {o.status === 'enquiry' && <Button onClick={() => patchOrder({ status: 'quotation' })}><Send className="h-4 w-4" />Mark quotation sent</Button>}

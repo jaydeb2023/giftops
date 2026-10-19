@@ -60,7 +60,7 @@ export async function GET(req: NextRequest, { params }: { params: { kind: string
   return new NextResponse(csv, {
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',
-      'Content-Disposition': `attachment; filename="raahvia-${params.kind}-${new Date().toISOString().slice(0, 10)}.csv"`,
+      'Content-Disposition': `attachment; filename="giftops-${params.kind}-${new Date().toISOString().slice(0, 10)}.csv"`,
     },
   })
 }

@@ -54,7 +54,7 @@ export default function PackingPage() {
           {rows.map(r => (
             <tr key={r.id} className="hover:bg-gray-50">
               <Td><input type="checkbox" checked={sel.has(r.id)} onChange={() => setSel(s => { const n = new Set(s); n.has(r.id) ? n.delete(r.id) : n.add(r.id); return n })} aria-label="Select" /></Td>
-              <Td><Link className="font-mono text-xs text-rv-700 hover:underline" href={`/raahvia/orders/${r.order_id}`}>{r.delivery_no}</Link></Td>
+              <Td><Link className="font-mono text-xs text-rv-700 hover:underline" href={`/app/orders/${r.order_id}`}>{r.delivery_no}</Link></Td>
               <Td className="font-medium">{r.name}</Td>
               <Td className="max-w-[260px]"><div className="truncate">{r.items_note || '-'}</div><div className="truncate text-xs text-gray-500">{r.card_message ? `Card: ${r.card_message}` : ''}</div></Td>
               <Td>{r.zone || '-'}</Td>

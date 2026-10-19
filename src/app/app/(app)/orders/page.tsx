@@ -20,8 +20,8 @@ export default function OrdersPage() {
       filters={[{ key: 'status', label: 'Status', options: ORDER_STATUSES.map(v => ({ value: v, label: labelize(v) })) }]}
       fields={orderFields}
       canDelete
-      onRowClick={r => router.push(`/raahvia/orders/${r.id}`)}
-      onCreated={r => router.push(`/raahvia/orders/${r.id}`)}
+      onRowClick={r => router.push(`/app/orders/${r.id}`)}
+      onCreated={r => router.push(`/app/orders/${r.id}`)}
       columns={[
         { key: 'order_no', label: 'Order', render: r => <span className="font-mono text-xs font-semibold text-rv-800">{r.order_no}</span> },
         { key: 'customer', label: 'Customer', render: r => r.customer?.company || r.customer?.name || '-' },

@@ -27,7 +27,7 @@ export default function PaymentsPage() {
         <Table head={['Date', 'Customer', 'Invoice', 'Amount', 'Mode', 'Reference']}>
           {rows.map(p => (
             <tr key={p.id}><Td>{fmtDate(p.received_on)}</Td><Td>{p.customer?.company || p.customer?.name}</Td>
-              <Td>{p.invoice ? <Link className="text-rv-700 hover:underline" href={`/raahvia/invoices/${p.invoice.id}`}>{p.invoice.invoice_no}</Link> : '-'}</Td>
+              <Td>{p.invoice ? <Link className="text-rv-700 hover:underline" href={`/app/invoices/${p.invoice.id}`}>{p.invoice.invoice_no}</Link> : '-'}</Td>
               <Td className="font-medium">{inr(p.amount)}</Td><Td>{labelize(p.mode)}</Td><Td>{p.reference || '-'}</Td></tr>
           ))}
         </Table>

@@ -40,7 +40,7 @@ export default function ExceptionsPage() {
           {fr.map(r => (
             <tr key={r.id}>
               <Td><div className="font-medium">{r.name}</div><div className="text-xs text-gray-500">{r.mobile || '-'}</div></Td>
-              <Td><Link className="text-rv-700 hover:underline" href={`/raahvia/orders/${r.order_id}`}>{r.order?.order_no}</Link></Td>
+              <Td><Link className="text-rv-700 hover:underline" href={`/app/orders/${r.order_id}`}>{r.order?.order_no}</Link></Td>
               <Td className="max-w-[220px] text-red-700">{(r.failed_reason || '').replace(/_/g, ' ')}<div className="text-xs"><Badge value={r.delivery_status} /></div></Td>
               <Td>{r.attempt_count}</Td><Td>{r.reattempt_date || '-'}</Td>
               <Td><Badge value={r.address_status} /></Td>
@@ -59,7 +59,7 @@ export default function ExceptionsPage() {
           {tk.map(t => (
             <tr key={t.id}>
               <Td className="max-w-[420px]">{t.title}</Td><Td>{labelize(t.kind)}</Td>
-              <Td>{t.order ? <Link className="text-rv-700 hover:underline" href={`/raahvia/orders/${t.order_id}`}>{t.order.order_no}</Link> : t.lead?.name || '-'}</Td>
+              <Td>{t.order ? <Link className="text-rv-700 hover:underline" href={`/app/orders/${t.order_id}`}>{t.order.order_no}</Link> : t.lead?.name || '-'}</Td>
               <Td className={overdue(t) ? 'font-medium text-red-600' : ''}>{fmtDateTime(t.due_at)}{overdue(t) && ' (overdue)'}</Td>
               <Td className="text-right">
                 {t.recipient_id && t.kind === 'address' && <Button size="sm" variant="ghost" onClick={() => setAddr(t.recipient_id)}><ShieldCheck className="h-3.5 w-3.5 text-rv-700" />Address</Button>}

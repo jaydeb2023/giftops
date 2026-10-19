@@ -88,7 +88,7 @@ export default function RunPage() {
 
   return (
     <div className="print:text-xs">
-      <Link href="/raahvia/delivery" className="mb-3 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-rv-700 print:hidden"><ArrowLeft className="h-4 w-4" />All runs</Link>
+      <Link href="/app/delivery" className="mb-3 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-rv-700 print:hidden"><ArrowLeft className="h-4 w-4" />All runs</Link>
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="flex items-center gap-2"><h1 className="font-mono text-xl font-bold text-rv-800">{run.run_no}</h1><Badge value={run.status} /></div>

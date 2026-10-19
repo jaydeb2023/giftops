@@ -45,7 +45,7 @@ export default function InvoicePage() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 print:hidden">
-        <Link href="/raahvia/invoices" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-rv-700"><ArrowLeft className="h-4 w-4" />All invoices</Link>
+        <Link href="/app/invoices" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-rv-700"><ArrowLeft className="h-4 w-4" />All invoices</Link>
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => window.print()}><Printer className="h-4 w-4" />Print / Save as PDF</Button>
           {canFin && !isCN && ['issued', 'part_paid'].includes(inv.status) && <Button variant="primary" onClick={() => setPay(true)}><Banknote className="h-4 w-4" />Record payment</Button>}
@@ -57,7 +57,7 @@ export default function InvoicePage() {
       <div className="mx-auto max-w-3xl rounded-xl border border-gray-200 bg-white p-8 shadow-sm print:max-w-none print:rounded-none print:border-0 print:p-0 print:shadow-none">
         <div className="flex items-start justify-between border-b-2 border-rv-800 pb-4">
           <div>
-            <div className="text-2xl font-extrabold tracking-wide text-rv-800">{company.name || 'Raahvia'}</div>
+            <div className="text-2xl font-extrabold tracking-wide text-rv-800">{company.name || 'Your company'}</div>
             <div className="text-xs text-gray-500">{company.tagline}</div>
             <div className="mt-2 whitespace-pre-line text-xs text-gray-600">{company.address}{company.phone ? `\nPhone: ${company.phone}` : ''}{company.email ? `\n${company.email}` : ''}{company.gstin ? `\nGSTIN: ${company.gstin}` : ''}</div>
           </div>
@@ -97,7 +97,7 @@ export default function InvoicePage() {
       {(payments.length > 0 || credit_notes.length > 0) && (
         <div className="mx-auto mt-5 max-w-3xl space-y-4 print:hidden">
           {payments.length > 0 && <Card title="Payments received" pad={false}><div className="p-4"><Table head={['Date', 'Amount', 'Mode', 'Reference']}>{payments.map((p: any) => <tr key={p.id}><Td>{fmtDate(p.received_on)}</Td><Td>{inr(p.amount)}</Td><Td>{labelize(p.mode)}</Td><Td>{p.reference || '-'}</Td></tr>)}</Table></div></Card>}
-          {credit_notes.length > 0 && <Card title="Credit notes" pad={false}><div className="p-4"><Table head={['Credit note', 'Date', 'Total']}>{credit_notes.map((n: any) => <tr key={n.id}><Td><Link className="text-rv-700 hover:underline" href={`/raahvia/invoices/${n.id}`}>{n.invoice_no}</Link></Td><Td>{fmtDate(n.invoice_date)}</Td><Td>{inr(n.total)}</Td></tr>)}</Table></div></Card>}
+          {credit_notes.length > 0 && <Card title="Credit notes" pad={false}><div className="p-4"><Table head={['Credit note', 'Date', 'Total']}>{credit_notes.map((n: any) => <tr key={n.id}><Td><Link className="text-rv-700 hover:underline" href={`/app/invoices/${n.id}`}>{n.invoice_no}</Link></Td><Td>{fmtDate(n.invoice_date)}</Td><Td>{inr(n.total)}</Td></tr>)}</Table></div></Card>}
         </div>
       )}
       <FormModal open={pay} onClose={() => setPay(false)} title={`Record payment: ${inv.invoice_no}`} fields={payFields} onSubmit={doPay} />

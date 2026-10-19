@@ -38,7 +38,7 @@ export default function InvoicesPage() {
     if (v.order_id) { body.order_id = v.order_id; body.extra_lines = line } else { body.customer_id = v.customer_id; body.lines = line }
     if (!body.order_id && !body.customer_id) throw new Error('Choose an order or a customer')
     const r = await api<{ data: any }>('/api/rv/invoices', { body })
-    toast.success(`Invoice ${r.data.invoice_no} created`); router.push(`/raahvia/invoices/${r.data.id}`)
+    toast.success(`Invoice ${r.data.invoice_no} created`); router.push(`/app/invoices/${r.data.id}`)
   }
 
   return (
@@ -58,7 +58,7 @@ export default function InvoicesPage() {
         <Table head={['Invoice', 'Date', 'Customer', 'Order', 'Taxable', 'GST', 'Total', 'Paid', 'Due', 'Status']}>
           {rows.map(i => (
             <tr key={i.id} className="hover:bg-gray-50">
-              <Td><Link className="font-medium text-rv-700 hover:underline" href={`/raahvia/invoices/${i.id}`}>{i.invoice_no}</Link>{i.doc_type === 'credit_note' && <span className="ml-1 text-xs text-gray-500">credit note</span>}</Td>
+              <Td><Link className="font-medium text-rv-700 hover:underline" href={`/app/invoices/${i.id}`}>{i.invoice_no}</Link>{i.doc_type === 'credit_note' && <span className="ml-1 text-xs text-gray-500">credit note</span>}</Td>
               <Td>{fmtDate(i.invoice_date)}</Td><Td>{i.customer?.company || i.customer?.name}</Td><Td className="text-xs">{i.order?.order_no || '-'}</Td>
               <Td>{inr(i.taxable_value)}</Td><Td>{inr(Number(i.cgst) + Number(i.sgst) + Number(i.igst))}</Td>
               <Td className="font-medium">{inr(i.total)}</Td><Td>{inr(i.paid_amount)}</Td><Td>{fmtDate(i.due_date)}</Td><Td><Badge value={i.status} /></Td>

@@ -29,7 +29,7 @@ export async function downloadTemplate() {
   ws['!cols'] = TEMPLATE_HEADERS.map(() => ({ wch: 24 }))
   const wb = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(wb, ws, 'Recipients')
-  XLSX.writeFile(wb, 'raahvia-recipient-template.xlsx')
+  XLSX.writeFile(wb, 'giftops-recipient-template.xlsx')
 }
 
 interface Result { dry_run: boolean; total: number; inserted: number; valid: number; rejected: { row: number; name: string; reason: string }[]; warnings: { row: number; name: string; reason: string }[] }

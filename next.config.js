@@ -2,7 +2,11 @@
 const nextConfig = {
   // Raahvia is the product home; the original Kaaj pages remain reachable at their own URLs
   async redirects() {
-    return [{ source: '/', destination: '/raahvia', permanent: false }]
+    return [
+      { source: '/', destination: '/app', permanent: false },
+      { source: '/raahvia', destination: '/app', permanent: false },        // old bookmarks
+      { source: '/raahvia/:path*', destination: '/app/:path*', permanent: false },
+    ]
   },
   images: {
     remotePatterns: [

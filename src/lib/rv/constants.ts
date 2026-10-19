@@ -97,7 +97,7 @@ export function labelize(v: string | null | undefined): string {
   return v.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())
 }
 
-/** Which sidebar items each role sees. `href` is relative to /raahvia. */
+/** Which sidebar items each role sees. `href` is relative to /app. */
 export interface NavItem { href: string; label: string; roles: RvRole[]; group: string }
 export const NAV: NavItem[] = [
   { group: 'Overview', href: '', label: 'Dashboard', roles: ['admin', 'sales', 'ops', 'finance'] },
@@ -126,5 +126,5 @@ export function canSee(role: RvRole, href: string): boolean {
 }
 
 export function defaultPath(role: RvRole): string {
-  return role === 'rider' ? '/raahvia/rider' : '/raahvia'
+  return role === 'rider' ? '/app/rider' : '/app'
 }
