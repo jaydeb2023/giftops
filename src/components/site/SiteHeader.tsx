@@ -2,12 +2,12 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
-import { LogoMark } from '@/components/rv/Logo'
 
 const NAV = [
   { href: '#home', label: 'Home' },
   { href: '#features', label: 'Features' },
   { href: '#how-it-works', label: 'How it works' },
+  { href: '#services', label: 'Services' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' },
@@ -18,12 +18,9 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-rv-100/70 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <a href="#home" className="flex items-center gap-3">
-          <LogoMark size={44} />
-          <div className="leading-none">
-            <div className="text-[26px] font-extrabold tracking-tight text-rv-700">GiftOps</div>
-            <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-500">by Evynta</div>
-          </div>
+        <a href="#home" className="flex items-center gap-3" aria-label="GiftOps home">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/giftops-logo.png" alt="GiftOps - Gift Delivery Business Management Software" className="h-12 w-auto sm:h-14" />
           <span className="mx-2 hidden h-10 w-px bg-slate-200 md:block" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/evynta-logo-dark.png" alt="Evynta - AI, Web, Data Solutions" className="hidden h-12 w-auto md:block" />

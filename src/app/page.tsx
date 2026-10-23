@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   ArrowRight, BarChart3, Building2, Camera, ClipboardCheck, FileSpreadsheet, Gift, IndianRupee, Inbox, MessageCircle,
-  Package, PlayCircle, Receipt, ShieldCheck, Truck, UserPlus, Users, Phone, Boxes, Wallet,
+  Package, PlayCircle, Receipt, ShieldCheck, Truck, UserPlus, Users, Phone, Boxes, Wallet, Bot, Globe, Database, Check,
 } from 'lucide-react'
 import SiteHeader from '@/components/site/SiteHeader'
 import ContactForm from '@/components/site/ContactForm'
@@ -52,6 +52,22 @@ const FEATURES = [
   { icon: Camera, title: 'Photo proof of delivery', text: 'Riders take a photo at the door. Failed deliveries become tasks automatically.' },
   { icon: Receipt, title: 'GST invoices & payments', text: 'CGST/SGST or IGST worked out for you. Print or save as PDF, issue credit notes, record payments without double entry.' },
   { icon: Wallet, title: 'Bills, expenses & reports', text: 'See profit on every order, who owes you, who you owe, and download everything to Excel.' },
+]
+
+const SERVICES = [
+  { icon: Bot, title: 'AI Solutions', text: 'WhatsApp and calling assistants, lead follow-up and smart automation that save your team hours every day.', points: ['WhatsApp & AI calling', 'Chatbots for enquiries', 'Workflow automation'] },
+  { icon: Globe, title: 'Web Development', text: 'Fast, good-looking websites and web apps for your business, built to bring in enquiries and orders.', points: ['Business websites', 'Custom web apps', 'SEO & hosting setup'] },
+  { icon: Database, title: 'Data Solutions', text: 'Bring your Excel sheets and scattered records into one clean system with dashboards you can trust.', points: ['Excel to system migration', 'Reports & dashboards', 'Data clean-up'] },
+]
+
+// EDIT YOUR PRICES HERE (shown on the home page). Set `price` to '' to show "Custom".
+const PLANS = [
+  { name: 'Starter', price: '1,999', note: 'For small gifting shops getting started', cta: 'Start free trial', featured: false,
+    items: ['Up to 3 team logins', 'Leads, customers & orders', 'Bulk recipient upload (Excel)', 'GST invoices & payments', 'Email support'] },
+  { name: 'Growth', price: '4,999', note: 'For busy teams with festival-season volume', cta: 'Start free trial', featured: true,
+    items: ['Up to 10 team logins', 'Everything in Starter', 'Auto address follow-up (WhatsApp + AI call)', 'Packing, delivery runs & rider app', 'Photo proof of delivery', 'Priority support'] },
+  { name: 'Business', price: '', note: 'For large operations and multiple branches', cta: 'Talk to us', featured: false,
+    items: ['Unlimited team logins', 'Everything in Growth', 'Your own web address', 'Custom setup & data migration', 'Team training', 'Dedicated support'] },
 ]
 
 export default function Home() {
@@ -146,18 +162,57 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="scroll-mt-20 px-4 py-20 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="text-xs font-semibold uppercase tracking-[0.25em] text-rv-700">Pricing</div>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Simple and fair, sized to your business</h2>
-          <p className="mt-4 text-lg text-slate-600">A one-time setup plus a small monthly plan. The price depends on your team size and how many recipients you handle. Tell us about your business and we will send a clear quote.</p>
-          <ul className="mx-auto mt-8 grid max-w-xl gap-3 text-left sm:grid-cols-2">
-            {['Setup on your own web address', 'Your company details on every invoice', 'Team logins with the right access', 'Training for your team'].map(x => (
-              <li key={x} className="flex items-start gap-2 rounded-xl bg-rv-50 px-4 py-3 text-[15px] font-medium text-slate-700"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-rv-700" />{x}</li>
+      {/* SERVICES */}
+      <section id="services" className="scroll-mt-20 px-4 py-20 sm:px-6">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center">
+            <div className="text-xs font-semibold uppercase tracking-[0.25em] text-rv-700">Our services</div>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">AI, Web and Data solutions from Evynta</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-500">GiftOps is built by Evynta. Beyond the software, we help your business grow with three core services.</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {SERVICES.map(s => (
+              <div key={s.title} className="rounded-2xl border border-rv-100 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rv-100 text-rv-700"><s.icon className="h-7 w-7" /></span>
+                <h3 className="mt-5 text-xl font-bold">{s.title}</h3>
+                <p className="mt-2 leading-relaxed text-slate-600">{s.text}</p>
+                <ul className="mt-4 space-y-2">
+                  {s.points.map(x => <li key={x} className="flex items-center gap-2 text-[15px] font-medium text-slate-700"><Check className="h-4 w-4 text-rv-700" />{x}</li>)}
+                </ul>
+                <a href="#contact" className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-rv-700 hover:underline">Ask about this <ArrowRight className="h-4 w-4" /></a>
+              </div>
             ))}
-          </ul>
-          <a href="#contact" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-rv-700 px-8 py-4 text-lg font-semibold text-white transition hover:bg-rv-800">Get a quote <ArrowRight className="h-5 w-5" /></a>
+          </div>
+        </div>
+      </section>
+
+      {/* PRICING */}
+      <section id="pricing" className="scroll-mt-20 bg-rv-50/50 px-4 py-20 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <div className="text-xs font-semibold uppercase tracking-[0.25em] text-rv-700">Pricing</div>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Simple and fair, sized to your business</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-600">Every plan starts with a 14-day free trial. No card needed. Prices are per month, excluding GST.</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {PLANS.map(pl => (
+              <div key={pl.name} className={`relative flex flex-col rounded-2xl bg-white p-7 shadow-sm ${pl.featured ? 'border-2 border-rv-700 shadow-lg md:-mt-3 md:pb-10' : 'border border-rv-100'}`}>
+                {pl.featured && <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-rv-700 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white">Most popular</span>}
+                <h3 className="text-xl font-bold">{pl.name}</h3>
+                <p className="mt-1 text-sm text-slate-500">{pl.note}</p>
+                <div className="mt-5 flex items-end gap-1">
+                  {pl.price ? <><span className="text-4xl font-extrabold text-rv-800">&#8377;{pl.price}</span><span className="pb-1 text-slate-500">/month</span></> : <span className="text-4xl font-extrabold text-rv-800">Custom</span>}
+                </div>
+                <ul className="mt-6 flex-1 space-y-3">
+                  {pl.items.map(x => <li key={x} className="flex items-start gap-2 text-[15px] text-slate-700"><Check className="mt-0.5 h-5 w-5 shrink-0 text-rv-700" />{x}</li>)}
+                </ul>
+                {pl.price
+                  ? <Link href="/app/login?mode=signup" className={`mt-8 inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 font-semibold transition ${pl.featured ? 'bg-rv-700 text-white hover:bg-rv-800' : 'border-2 border-rv-700 text-rv-700 hover:bg-rv-50'}`}>{pl.cta} <ArrowRight className="h-5 w-5" /></Link>
+                  : <a href="#contact" className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-rv-700 px-6 py-3.5 font-semibold text-rv-700 transition hover:bg-rv-50">{pl.cta} <ArrowRight className="h-5 w-5" /></a>}
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 text-center text-sm text-slate-500">One-time setup and training are quoted separately. WhatsApp and AI calling use your own provider accounts.</p>
         </div>
       </section>
 

@@ -10,6 +10,7 @@ import { api, ApiError } from '@/lib/rv/client'
 import { NAV, ROLE_LABEL, defaultPath, canSee } from '@/lib/rv/constants'
 import { StaffContext, OrgContext, StaffMe, OrgMe } from './StaffContext'
 import { Spinner, cx } from './ui'
+import CompanySetup from './CompanySetup'
 
 export default function RvShell({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -19,6 +20,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
   const [isSuper, setIsSuper] = useState(false)
   const [state, setState] = useState<'loading' | 'ok' | 'denied'>('loading')
   const [deniedMsg, setDeniedMsg] = useState('')
+  const [deniedCode, setDeniedCode] = useState('')
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
       })
       .catch((e: ApiError) => {
         if (e.status === 401) router.replace(`/app/login?next=${encodeURIComponent(pathname)}`)
-        else { setDeniedMsg(e.message); setState('denied') }
+        else { setDeniedMsg(e.message); setDeniedCode(e.code || ''); setState('denied') }
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -50,6 +52,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
 
   if (state === 'loading') return <div className="flex min-h-screen items-center justify-center"><Spinner className="h-8 w-8" /></div>
   const onPlatform = pathname.startsWith('/app/platform')
+  if (state === 'denied' && deniedCode === 'NOT_STAFF') return <CompanySetup onSignOut={signOut} />
   if (state === 'denied' || (!me && !(isSuper && onPlatform))) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
@@ -69,7 +72,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
   const sidebar = (
     <nav className="flex h-full flex-col bg-rv-900 text-rv-100">
       <div className="px-5 py-5">
-        <Logo light />
+        <Link href="/" title="Go to GiftOps home page" aria-label="GiftOps home page" className="inline-block"><Logo light size={34} /></Link>
         {org && <div className="mt-3 truncate rounded-md bg-rv-800 px-2.5 py-1.5 text-xs font-medium text-rv-100">{org.name}</div>}
       </div>
       <div className="flex-1 space-y-4 overflow-y-auto px-3 pb-4">
@@ -112,7 +115,7 @@ export default function RvShell({ children }: { children: React.ReactNode }) {
         <div className="lg:pl-60 print:pl-0">
           <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-gray-200 bg-white px-4 py-3 lg:hidden print:hidden">
             <button onClick={() => setOpen(o => !o)} aria-label="Menu" className="rounded-md p-1.5 hover:bg-gray-100">{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
-            <Logo size={28} tagline={false} />
+            <Link href="/" title="Go to GiftOps home page" aria-label="GiftOps home page"><Logo size={30} tagline={false} /></Link>
           </header>
           {org?.status === 'trial' && org.trial_ends_at && (() => {
             const d = Math.ceil((new Date(org.trial_ends_at).getTime() - Date.now()) / 864e5)

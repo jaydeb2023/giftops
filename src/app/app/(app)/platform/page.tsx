@@ -14,9 +14,22 @@ function Overview() {
   const { data, error } = useFetch<any>('/api/rv/platform/overview')
   if (error) return <ErrorNote>{error}</ErrorNote>
   if (!data) return <Spinner className="mx-auto my-8 h-6 w-6" />
-  return <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-    <Stat label="Companies" value={data.orgs} /><Stat label="On free trial" value={data.trial} /><Stat label="Paying / active" value={data.active} /><Stat label="Suspended" value={data.suspended} />
-    <Stat label="Logins (all companies)" value={data.users} /><Stat label="New companies, last 7 days" value={data.new_companies_7d} /><Stat label="Leads (all companies)" value={data.leads} /><Stat label="Orders (all companies)" value={data.orders} />
+  const L = data.logins || {}
+  return <div className="space-y-6">
+    <div>
+      <div className="mb-2 text-sm font-semibold text-gray-700">Logins (visible to you only)</div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Stat label="Total accounts" value={L.accounts ?? 0} /><Stat label="Logged in, last 24 hours" value={L.today ?? 0} /><Stat label="Logged in, last 7 days" value={L.d7 ?? 0} /><Stat label="Logged in, last 30 days" value={L.d30 ?? 0} />
+        <Stat label="Never logged in" value={L.never ?? 0} /><Stat label="New accounts, last 7 days" value={L.new7 ?? 0} /><Stat label="Signed in with Google" value={L.google ?? 0} /><Stat label="Signed in with email" value={L.email ?? 0} />
+      </div>
+    </div>
+    <div>
+      <div className="mb-2 text-sm font-semibold text-gray-700">Business</div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Stat label="Companies" value={data.orgs} /><Stat label="On free trial" value={data.trial} /><Stat label="Paying / active" value={data.active} /><Stat label="Suspended" value={data.suspended} />
+        <Stat label="Team members (all companies)" value={data.users} /><Stat label="New companies, last 7 days" value={data.new_companies_7d} /><Stat label="Leads (all companies)" value={data.leads} /><Stat label="Orders (all companies)" value={data.orders} />
+      </div>
+    </div>
   </div>
 }
 
@@ -69,8 +82,8 @@ function Users() {
   const { data, loading, error } = useFetch<{ data: any[] }>('/api/rv/platform/users')
   if (error) return <ErrorNote>{error}</ErrorNote>
   if (loading && !data) return <Spinner className="mx-auto my-8 h-6 w-6" />
-  return <Table head={['Name', 'Email', 'Company', 'Role', 'Joined', 'Last sign-in']}>
-    {(data?.data || []).map(u => <tr key={u.id}><Td>{u.full_name}</Td><Td>{u.email}</Td><Td>{u.org?.name || '-'}</Td><Td>{u.role}{u.active ? '' : ' (inactive)'}</Td><Td>{fmtDate(u.created_at)}</Td><Td>{u.last_sign_in ? fmtDateTime(u.last_sign_in) : 'never'}</Td></tr>)}
+  return <Table head={['Name', 'Email', 'Company', 'Role', 'Via', 'Joined', 'Last sign-in']}>
+    {(data?.data || []).map(u => <tr key={u.id}><Td>{u.full_name}</Td><Td>{u.email}</Td><Td>{u.org?.name || '-'}</Td><Td>{u.role}{u.active ? '' : ' (inactive)'}</Td><Td>{u.provider || '-'}</Td><Td>{fmtDate(u.created_at)}</Td><Td>{u.last_sign_in ? fmtDateTime(u.last_sign_in) : 'never'}</Td></tr>)}
   </Table>
 }
 
