@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   ArrowRight, BarChart3, Building2, Camera, ClipboardCheck, FileSpreadsheet, Gift, IndianRupee, Inbox, MessageCircle,
-  Package, PlayCircle, Receipt, ShieldCheck, Truck, UserPlus, Users, Phone, Boxes, Wallet, Bot, Globe, Database, Check,
+  Package, PlayCircle, Receipt, ShieldCheck, Truck, UserPlus, Users, Phone, Boxes, Wallet, Check,
 } from 'lucide-react'
 import SiteHeader from '@/components/site/SiteHeader'
 import ContactForm from '@/components/site/ContactForm'
@@ -52,12 +52,6 @@ const FEATURES = [
   { icon: Camera, title: 'Photo proof of delivery', text: 'Riders take a photo at the door. Failed deliveries become tasks automatically.' },
   { icon: Receipt, title: 'GST invoices & payments', text: 'CGST/SGST or IGST worked out for you. Print or save as PDF, issue credit notes, record payments without double entry.' },
   { icon: Wallet, title: 'Bills, expenses & reports', text: 'See profit on every order, who owes you, who you owe, and download everything to Excel.' },
-]
-
-const SERVICES = [
-  { icon: Bot, title: 'AI Solutions', text: 'WhatsApp and calling assistants, lead follow-up and smart automation that save your team hours every day.', points: ['WhatsApp & AI calling', 'Chatbots for enquiries', 'Workflow automation'] },
-  { icon: Globe, title: 'Web Development', text: 'Fast, good-looking websites and web apps for your business, built to bring in enquiries and orders.', points: ['Business websites', 'Custom web apps', 'SEO & hosting setup'] },
-  { icon: Database, title: 'Data Solutions', text: 'Bring your Excel sheets and scattered records into one clean system with dashboards you can trust.', points: ['Excel to system migration', 'Reports & dashboards', 'Data clean-up'] },
 ]
 
 // EDIT YOUR PRICES HERE (shown on the home page). Set `price` to '' to show "Custom".
@@ -111,10 +105,6 @@ const jsonLdHome = [
     '@type': 'FAQPage',
     mainEntity: FAQS.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   },
-  ...SERVICES.map(s => ({
-    '@context': 'https://schema.org', '@type': 'Service', name: s.title, description: s.text,
-    provider: { '@id': `${SITE}/#organization` }, areaServed: { '@type': 'Country', name: 'India' },
-  })),
 ]
 
 export default function Home() {
@@ -207,30 +197,6 @@ export default function Home() {
             ))}
           </div>
           <p className="mt-8 text-center text-sm text-slate-500">WhatsApp, AI calling and Instagram/Facebook connections are set up with your own accounts. We help you connect them.</p>
-        </div>
-      </section>
-
-      {/* SERVICES */}
-      <section id="services" className="scroll-mt-20 px-4 py-20 sm:px-6">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center">
-            <div className="text-xs font-semibold uppercase tracking-[0.25em] text-rv-700">Our services</div>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">AI, Web and Data solutions from Evynta</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-500">GiftOps is built by Evynta. Beyond the software, we help your business grow with three core services.</p>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {SERVICES.map(s => (
-              <div key={s.title} className="rounded-2xl border border-rv-100 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rv-100 text-rv-700"><s.icon className="h-7 w-7" /></span>
-                <h3 className="mt-5 text-xl font-bold">{s.title}</h3>
-                <p className="mt-2 leading-relaxed text-slate-600">{s.text}</p>
-                <ul className="mt-4 space-y-2">
-                  {s.points.map(x => <li key={x} className="flex items-center gap-2 text-[15px] font-medium text-slate-700"><Check className="h-4 w-4 text-rv-700" />{x}</li>)}
-                </ul>
-                <a href="#contact" className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-rv-700 hover:underline">Ask about this <ArrowRight className="h-4 w-4" /></a>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
