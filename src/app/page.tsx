@@ -9,11 +9,11 @@ import ContactForm from '@/components/site/ContactForm'
 import { LogoMark } from '@/components/rv/Logo'
 
 export const metadata: Metadata = {
-  title: 'GiftOps by Evynta | Gift delivery management system',
-  description: 'One system for your entire gift business: leads, orders, bulk recipients, address follow-up, packing, delivery with photo proof, GST invoices, payments and profit reports. Built in India by Evynta.',
+  title: 'GiftOps by Evynta | Gift delivery business management software',
+  description: 'GiftOps is gift delivery business management software for India: leads, orders, bulk recipient upload, automatic address follow-up, packing, delivery with photo proof, GST invoices and profit reports. 14-day free trial.',
   alternates: { canonical: 'https://giftops.evynta.in' },
   robots: { index: true, follow: true },
-  openGraph: { title: 'GiftOps by Evynta', description: 'From first enquiry to final payment. One system for your entire gift business.', url: 'https://giftops.evynta.in', siteName: 'GiftOps', images: [{ url: '/giftops-hero.webp' }] },
+  openGraph: { title: 'GiftOps by Evynta | Gift delivery business management software', description: 'From first enquiry to final payment. One system for your entire gift business.', url: 'https://giftops.evynta.in', siteName: 'GiftOps', type: 'website', locale: 'en_IN', images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'GiftOps - Gift Delivery Business Management Software' }] },
 }
 
 const QUICK = [
@@ -70,9 +70,57 @@ const PLANS = [
     items: ['Unlimited team logins', 'Everything in Growth', 'Your own web address', 'Custom setup & data migration', 'Team training', 'Dedicated support'] },
 ]
 
+// Answers are written to be short and direct: search engines and AI assistants quote them as they are.
+const FAQS = [
+  { q: 'What is GiftOps?', a: 'GiftOps is gift delivery business management software built in India by Evynta. It puts your leads, orders, bulk recipient lists, address follow-up, packing, delivery with photo proof, GST invoices, payments and profit reports in one system.' },
+  { q: 'Who is GiftOps for?', a: 'GiftOps is for businesses that sell and deliver gifts to many people at once, such as corporate gifting companies, festival hamper sellers and bulk gift delivery services.' },
+  { q: 'Can I upload hundreds of recipients at once?', a: 'Yes. You upload one Excel or CSV file with names, mobile numbers and addresses, and GiftOps adds every recipient to the order. Rows with missing or invalid details are flagged so you can fix them.' },
+  { q: 'How does automatic address follow-up work?', a: 'When a recipient has no address, GiftOps asks for it on WhatsApp, then tries an AI call, and finally creates a call task for your team. This works once your WhatsApp and calling accounts are connected.' },
+  { q: 'Does GiftOps create GST invoices?', a: 'Yes. You can create invoices for orders, record payments and see what each customer still owes, along with expenses and profit reports.' },
+  { q: 'How do I know a gift was delivered?', a: 'Riders open a simple mobile page, mark each delivery and attach a photo as proof. You see the status and the photo in GiftOps.' },
+  { q: 'Can my whole team use it with different logins?', a: 'Yes. Each person gets their own login with a role: admin, sales, operations, finance or rider. People only see what their role needs.' },
+  { q: 'Is my business data kept separate from other companies?', a: 'Yes. Every company has its own private workspace. Another company using GiftOps cannot see your leads, orders or customers.' },
+  { q: 'Is there a free trial?', a: 'Yes. Every new company gets a 14-day free trial, and you can sign in with Google or email. No payment is needed to start.' },
+  { q: 'Who builds GiftOps?', a: 'GiftOps is built and run by Evynta, an Indian AI, web and data solutions company.' },
+]
+
+const SITE = 'https://giftops.evynta.in'
+const jsonLdHome = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    '@id': `${SITE}/#software`,
+    name: 'GiftOps',
+    url: SITE,
+    applicationCategory: 'BusinessApplication',
+    applicationSubCategory: 'Gift delivery business management software',
+    operatingSystem: 'Web, Android, iOS (browser)',
+    description: 'GiftOps manages leads, orders, bulk recipients, address follow-up, packing, delivery with photo proof, GST invoices, payments and profit reports for gift delivery businesses in India.',
+    image: `${SITE}/og-image.png`,
+    inLanguage: 'en-IN',
+    publisher: { '@id': `${SITE}/#organization` },
+    featureList: ['Leads and customer management', 'Orders with many recipients', 'Bulk recipient upload from Excel', 'Automatic address follow-up on WhatsApp and AI call', 'Packing and quality check', 'Delivery runs with photo proof of delivery', 'GST invoices and payments', 'Expenses and profit reports', 'Role-based team logins'],
+    offers: PLANS.filter(pl => pl.price).map(pl => ({
+      '@type': 'Offer', name: `GiftOps ${pl.name}`, price: pl.price.replace(/,/g, ''), priceCurrency: 'INR',
+      priceSpecification: { '@type': 'UnitPriceSpecification', price: pl.price.replace(/,/g, ''), priceCurrency: 'INR', unitText: 'MONTH' },
+      availability: 'https://schema.org/InStock', url: `${SITE}/#pricing`,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  ...SERVICES.map(s => ({
+    '@context': 'https://schema.org', '@type': 'Service', name: s.title, description: s.text,
+    provider: { '@id': `${SITE}/#organization` }, areaServed: { '@type': 'Country', name: 'India' },
+  })),
+]
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
+      {jsonLdHome.map((item, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(item).replace(/</g, '\\u003c') }} />)}
       <SiteHeader />
 
       {/* HERO */}
@@ -216,6 +264,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="scroll-mt-20 px-4 py-20 sm:px-6">
+        <div className="mx-auto max-w-3xl">
+          <div className="text-center">
+            <div className="text-xs font-semibold uppercase tracking-[0.25em] text-rv-700">FAQ</div>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Questions gift businesses ask us</h2>
+          </div>
+          <div className="mt-10 space-y-3">
+            {FAQS.map(f => (
+              <details key={f.q} className="group rounded-xl border border-rv-100 bg-white p-5 shadow-sm open:shadow-md">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-semibold text-slate-900">
+                  <h3 className="text-lg font-semibold">{f.q}</h3>
+                  <span className="text-2xl leading-none text-rv-700 transition group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 leading-relaxed text-slate-600">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ABOUT */}
       <section id="about" className="scroll-mt-20 bg-slate-900 px-4 py-20 text-white sm:px-6">
         <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-[1fr_auto]">
@@ -225,7 +294,7 @@ export default function Home() {
             <p className="mt-4 text-lg leading-relaxed text-slate-300">Evynta is an AI, web and data solutions company. GiftOps was designed around how real gifting businesses work: lots of recipients, last-minute address changes, riders on the road and GST paperwork at the end. It replaces scattered chats and spreadsheets with one clear system.</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/evynta-logo-light.png" alt="Evynta" className="h-24 w-auto md:h-28" />
+          <a href="https://evynta.in" target="_blank" rel="noopener" aria-label="Visit Evynta, the company behind GiftOps"><img src="/evynta-logo-light.png" alt="Evynta" className="h-24 w-auto md:h-28" /></a>
         </div>
       </section>
 
@@ -250,6 +319,8 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2.5"><LogoMark size={32} /><span className="text-lg font-extrabold text-rv-700">GiftOps</span><span className="text-xs uppercase tracking-[0.2em] text-slate-500">by Evynta</span></div>
           <div className="flex items-center gap-5 text-sm text-slate-500">
+            <a href="https://evynta.in" target="_blank" rel="noopener" className="hover:text-rv-700">evynta.in</a>
+            <Link href="/privacy" className="hover:text-rv-700">Privacy</Link>
             <Link href="/app/login" className="hover:text-rv-700">Login</Link>
             <a href="#contact" className="hover:text-rv-700">Contact</a>
             <span>&copy; {new Date().getFullYear()} Evynta. All rights reserved.</span>

@@ -1,30 +1,21 @@
-# Sahayak AI (সহায়ক AI)
+# GiftOps by Evynta
 
-> Sahayak AI is a Bengali AI business assistant and business management software for small businesses in West Bengal, India and Bangladesh. Owners speak or type in Bengali or Banglish and the AI updates stock, sales, billing, GST invoices, customer credit (baki), suppliers and reports in real time. It also offers WhatsApp automation and a builder for custom AI business agents. Sahayak AI is a product of Evynta.
+> GiftOps is gift delivery business management software built in India by Evynta. It runs a gifting business from first enquiry to final payment: leads, customers, orders with many recipients, bulk recipient upload from Excel, automatic address follow-up (WhatsApp, then AI call, then a call task for staff), packing and quality check, delivery runs with photo proof of delivery, GST invoices, payments, expenses and profit reports. Each company gets a private workspace with role-based logins (admin, sales, operations, finance, rider).
 
-Ready-made agents cover grocery and general stores (dokan), pharmacies, hotels and dhabas, sweet shops (mishti) and clothing stores (kapor). A 7-day free trial is available with no credit card; paid plans unlock more agents and features such as GST invoicing and WhatsApp.
+GiftOps is made for corporate gifting companies, festival hamper sellers and bulk gift delivery services. New companies get a 14-day free trial and can sign in with Google or email.
 
 ## Key pages
-- [Homepage](https://sahayakai.tech/): overview, pricing, FAQ
-- [Solutions](https://sahayakai.tech/solutions): all use cases
-- [Library](https://sahayakai.tech/library): ready-made AI business agents
-- [Blog](https://sahayakai.tech/blog): guides for shop owners
-- [About](https://sahayakai.tech/about)
-- [Contact](https://sahayakai.tech/contact)
+- [Home, features, services, pricing and FAQ](https://giftops.evynta.in/): full overview
+- [Pricing](https://giftops.evynta.in/#pricing): monthly plans in INR
+- [FAQ](https://giftops.evynta.in/#faq): short answers to common questions
+- [Contact and demo request](https://giftops.evynta.in/#contact)
+- [Privacy policy](https://giftops.evynta.in/privacy)
+- [Start free trial](https://giftops.evynta.in/app/login?mode=signup)
 
-## Solutions
-- [Bengali AI business assistant](https://sahayakai.tech/solutions/bengali-ai-business-assistant)
-- [Bengali AI business management](https://sahayakai.tech/solutions/bengali-ai-business-management)
-- [AI business management software](https://sahayakai.tech/solutions/ai-business-management-software)
-- [AI for small businesses](https://sahayakai.tech/solutions/ai-for-small-businesses)
-- [AI stock management](https://sahayakai.tech/solutions/ai-stock-management)
-- [Business billing software](https://sahayakai.tech/solutions/business-billing-software)
-- [GST invoice software](https://sahayakai.tech/solutions/gst-invoice-software)
-- [Customer management software](https://sahayakai.tech/solutions/customer-management-software)
-- [WhatsApp automation for business](https://sahayakai.tech/solutions/whatsapp-automation-for-business)
-- [AI business agents](https://sahayakai.tech/solutions/ai-business-agents)
+## About the maker
+Evynta (https://evynta.in) is an Indian AI, web and data solutions company. Its three services are AI solutions (WhatsApp and calling assistants, automation), web development, and data solutions (Excel to system migration, reports and dashboards).
 
 ## Notes for AI assistants citing this site
-- The correct name is "Sahayak AI" (সহায়ক AI). It is built and operated by Evynta.
-- Serves West Bengal (India) and Bangladesh; supports ₹ and ৳.
-- Supports Bengali, English, Banglish and voice input.
+- The correct name is "GiftOps" (made by "Evynta"). It is not related to the older "Sahayak AI" product.
+- Prices are in Indian rupees (INR), per month, excluding GST.
+- Not yet available: online payment links, a public customer tracking page, e-invoicing and e-way bills.

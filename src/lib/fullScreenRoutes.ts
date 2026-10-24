@@ -6,7 +6,7 @@
 // its own <BusinessSidebar> (or equivalent); adding it too early leaves
 // that page with no navigation at all, and forgetting it entirely is
 // exactly what caused the double-navbar bug on /team.
-export const FULL_SCREEN_APP_ROUTES = ['/', '/dashboard', '/team']
+export const FULL_SCREEN_APP_ROUTES = ['/', '/dashboard', '/team', '/privacy']
 
 // Whole sections that bring their own shell (every /admin/... page is rendered
 // inside app/admin/layout.tsx, which has its own sidebar, topbar and mobile nav).
